@@ -1,7 +1,9 @@
-#include "Object.h"
+#include "MouseHandler.h"
 #include "constantes.h"
 
 Objeto o;
+MouseHandler mh;
+bool allow_to_add = false;
 
 void dibujar(){
     glBegin(GL_QUADS);
@@ -35,6 +37,7 @@ void displayFn(){
     glClear(GL_COLOR_BUFFER_BIT);
     o.dibujar();
     o.mover();
+    mh.dibujar();
     glFlush();
 }
 
@@ -46,6 +49,23 @@ void MiReshapeFunc(GLsizei w, GLsizei h){
     gluOrtho2D (0, WIN_ANCHO, 0, WIN_ALTO);
    
 }
+
+void mouseFunc(int button, int state, int x, int y){
+    if(state){
+        mh.addClick(x, y);
+        allow_to_add = true;
+    }
+}
+
+void passive_mouseFunc(int x, int y){
+    mh.setDrawer(false);
+}
+
+void motion_mouseFunc(int x, int y){
+    mh.addClick(x, y);
+    mh.setDrawer(true);
+}
+
 
 void Init(void){
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -68,6 +88,9 @@ int main(int argc, char ** argv){
     glutDisplayFunc(displayFn);
     glutReshapeFunc(MiReshapeFunc);
     glutIdleFunc(idle);
+    glutMouseFunc(mouseFunc);
+    glutMotionFunc(motion_mouseFunc);
+    glutPassiveMotionFunc(passive_mouseFunc);
     Init();
     glutMainLoop();
 }
