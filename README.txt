@@ -1,8 +1,8 @@
-Para compilar se debe hacer desde una terminar:
--En linux el comando es:
+LINUX----------
 g++ -lGL -lGLU -lglut -lm main.cpp -o app
--En OSX el comando es:
+
+MAC------------
 g++ -framework OpenGL -framework GLUT -framework IOKit -lobjc main.cpp -o app
 
-Y para ejecutar:
+EJECUTAR-------
 ./app
