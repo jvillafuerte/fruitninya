@@ -15,8 +15,12 @@
 #include <iostream>
 
 
+<<<<<<< HEAD
 using namespace std;
 
+=======
+GLfloat grave = -9.8;
+>>>>>>> d7b3f1e4826e27a10924459409c52a523afd2742
 class Punto
 {
 public:
@@ -40,6 +44,8 @@ public:
     GLfloat tam;
     GLfloat ang;
     GLfloat vel;
+    GLfloat velx;
+    GLfloat vely;
     GLfloat tiempo;
     GLfloat x0, y0;
     GLfloat vel_x, vel_y;
@@ -49,6 +55,8 @@ public:
         ang=0;
         vel=0;
         tiempo =0;
+        velx= vel*cos(ang * PI / 180);
+        vely= vel*sin(ang * PI / 180);
     }
 
     Objeto(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_){
@@ -56,6 +64,8 @@ public:
         tam=tamm;
         ang=angg;
         vel=vel_;
+        velx= vel*cos(ang * PI / 180);
+        vely= vel*sin(ang * PI / 180);
 
     }
     void set(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_){
