@@ -1,8 +1,8 @@
 #include "Object.h"
 #include "constantes.h"
-
 Objeto o;
 
+GLfloat angRotac=0;
 void dibujar(){
     glBegin(GL_QUADS);
     glColor3f(1.0f, 0.0f, 0.0f);
@@ -32,10 +32,24 @@ void eje(){
 }
 
 void displayFn(){
+
+    glMatrixMode(GL_MODELVIEW);
     glClear(GL_COLOR_BUFFER_BIT);
-    o.dibujar();
-    o.mover();
+    glLoadIdentity();
+    glClear(GL_COLOR_BUFFER_BIT);
+
+
+    glPushMatrix();
+        glTranslatef(o.centro->x,o.centro->y,0);
+        glRotated(angRotac,0,0,1);
+        glTranslatef(-o.centro->x,-o.centro->y,0);  
+        o.dibujar();
+        o.mover();
+
+    glPopMatrix();
+    glutSwapBuffers();
     glFlush();
+    angRotac+=0.1;
 }
 
 void MiReshapeFunc(GLsizei w, GLsizei h){
