@@ -14,6 +14,9 @@
 #include <vector>
 #include <iostream>
 
+
+using namespace std;
+
 class Punto
 {
 public:
@@ -38,8 +41,10 @@ public:
     GLfloat ang;
     GLfloat vel;
     GLfloat tiempo;
+    GLfloat x0, y0;
+    GLfloat vel_x, vel_y;
     Objeto(){
-    	centro = new Punto(0, 0);
+        centro = new Punto(0, 0);
         tam=0;
         ang=0;
         vel=0;
@@ -58,7 +63,10 @@ public:
         tam=tamm;
         ang=angg;
         vel=vel_;
-
+        y0 = yy;
+        x0 = xx;
+        vel_x= vel*cos(ang * PI / 180);
+        vel_y= vel*sin(ang * PI / 180);
     }
 
     ~Objeto(){}
@@ -72,25 +80,10 @@ public:
         glEnd();
     }
     void mover(){
-    	tiempo+=0.01;
-    	GLfloat velx= vel*cos(ang * PI / 180);
-    	GLfloat vely= vel*sin(ang * PI / 180);
-    	//centro->x=centro->x +1;
-    	centro->y=centro->y + vely*tiempo-0.5*GRAVEDAD*tiempo*tiempo;
-
-    	centro->x += velx * tiempo;
-
-
-
-        // ang = tetta*pi/180;
-        // centro.x = vel_base+posX+acel*cos(ang);
-        // centro.y = vel_base+posY+acel*sin(ang);
-        // if(acel >= )
-        //     acel = acel-0.0000005;
-        // else
-        //     acel = 0.00005;
+        tiempo+=0.01;
+        centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
+        centro->x = x0  + vel_x * tiempo;
     }
-
 };
 
 // class Lanzador

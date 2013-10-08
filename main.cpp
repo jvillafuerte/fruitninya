@@ -58,7 +58,7 @@ static void idle(void)
 
 int main(int argc, char ** argv){
     srand (time(NULL));
-    o.set(5,5,20,89,9);
+    o.set(5,5,20,80,100);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
