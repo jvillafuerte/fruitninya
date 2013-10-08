@@ -14,13 +14,8 @@
 #include <vector>
 #include <iostream>
 
-
-<<<<<<< HEAD
 using namespace std;
 
-=======
-GLfloat grave = -9.8;
->>>>>>> d7b3f1e4826e27a10924459409c52a523afd2742
 class Punto
 {
 public:
