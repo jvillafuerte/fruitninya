@@ -1,6 +1,8 @@
 #include "Object.h"
 #include "constantes.h"
 
+Objeto o;
+
 void dibujar(){
     glBegin(GL_QUADS);
     glColor3f(1.0f, 0.0f, 0.0f);
@@ -31,7 +33,8 @@ void eje(){
 
 void displayFn(){
     glClear(GL_COLOR_BUFFER_BIT);
-    dibujar();
+    o.dibujar();
+    o.mover();
     glFlush();
 }
 
@@ -55,6 +58,7 @@ static void idle(void)
 
 int main(int argc, char ** argv){
     srand (time(NULL));
+    o.set(5,5,20,89,9);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
