@@ -1,23 +1,9 @@
-#include "Object.h"
 #include "constantes.h"
-Objeto o;
-
+#include "launcher.h"
+lanzar o;
+int i=0;
 GLfloat angRotac=0;
-void dibujar(){
-    glBegin(GL_QUADS);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex2f(20.0, 20.0);
-    glVertex2f(37.32, 30);
-    glVertex2f(27.32, 47.32);
-    glVertex2f(10, 37.32);
-    glEnd();
-    glPointSize(3);
-    // Se pinta de amarillo el punto B para poder ver la transformacion
-    glBegin(GL_POINTS);
-        glColor3f(1.0,1.0,0.0);
-        glVertex2f(37.32, 30);
-    glEnd();
-}
+
 
 void eje(){
     // se dibuja el eje carteciano para poder guiarnos en las transformaciones
@@ -31,25 +17,28 @@ void eje(){
     glEnd();
 }
 
+
 void displayFn(){
 
     glMatrixMode(GL_MODELVIEW);
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
     glClear(GL_COLOR_BUFFER_BIT);
-
-
-    glPushMatrix();
-        glTranslatef(o.centro->x,o.centro->y,0);
+    if(o.objects[i].centro->y<0){
+        i++;
+    }
+        
+        glPushMatrix();
+        glTranslatef(o.objects[i].centro->x,o.objects[i].centro->y,0);
         glRotated(angRotac,0,0,1);
-        glTranslatef(-o.centro->x,-o.centro->y,0);  
-        o.dibujar();
-        o.mover();
+        glTranslatef(-o.objects[i].centro->x,-o.objects[i].centro->y,0);  
+        o.objects[i].dibujar();
+        o.objects[i].mover();
 
-    glPopMatrix();
-    glutSwapBuffers();
-    glFlush();
-    angRotac+=0.1;
+        glPopMatrix();
+        glutSwapBuffers();
+        glFlush();
+        angRotac+=1;  
 }
 
 void MiReshapeFunc(GLsizei w, GLsizei h){
@@ -72,8 +61,7 @@ static void idle(void)
 
 int main(int argc, char ** argv){
     srand (time(NULL));
-    o.set(5,5,20,80,100);
-
+    o.set(200);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(WIN_ANCHO, WIN_ALTO);

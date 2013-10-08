@@ -29,7 +29,9 @@ public:
         x = p->x;
         y = p->y;
     }
-    ~Punto(){}
+    ~Punto(){
+    	x=y=0;
+    }
 };
 
 class Objeto
@@ -70,14 +72,24 @@ public:
         vel=vel_;
         y0 = yy;
         x0 = xx;
-        vel_x= vel*cos(ang * PI / 180);
-        vel_y= vel*sin(ang * PI / 180);
+        if(ang>0){
+        	vel_x= vel*cos(ang * PI / 180);
+        	vel_y= vel*sin(ang * PI / 180);
+    	}else
+    	{
+			vel_x= -1*vel*cos(ang * PI / 180);
+        	vel_y= -1*vel*sin(ang * PI / 180);		
+    	}
     }
 
-    ~Objeto(){}
+    ~Objeto(){
+    	centro = NULL;
+    	delete centro;
+
+    }
     void dibujar(){
         glBegin(GL_QUADS);
-        glColor3f(1.0,1.0,0.0);;
+        glColor3f(1.0,0.0,0.0);;
         glVertex3f(centro->x-tam, centro->y-tam, 0);
         glVertex3f(centro->x+tam, centro->y-tam, 0);
         glVertex3f(centro->x+tam, centro->y+tam, 0);
@@ -85,7 +97,7 @@ public:
         glEnd();
     }
     void mover(){
-        tiempo+=0.01;
+        tiempo+=0.1;
         centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
         centro->x = x0  + vel_x * tiempo;
     }
