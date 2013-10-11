@@ -16,6 +16,12 @@ class Texto
         font2=(ptrdiff_t)GLUT_BITMAP_HELVETICA_12; 
     }
 
+    char * setnivel(int nivel)
+    {
+        sprintf (buff, "%d", nivel);
+        return buff;
+    }
+
     void resetPerspectiveProjection() {
         glMatrixMode(GL_PROJECTION);
         glPopMatrix();
@@ -31,9 +37,15 @@ class Texto
     }
 
     void print(){
+    
         glColor3f(1.0f, 1.0f, 0.0f);
         renderBitmapString(350,580,(void *)font,"Fruit Ninja");
         renderBitmapString(650,550, (void*)font2, "Frutas Cortadas: ");   
-        renderBitmapString(650,580, (void*)font2, "Nivel: "); 
+        renderBitmapString(650,580, (void*)font2, "Nivel: ");
+
+        renderBitmapString(690,580, (void*)font2, setnivel(5)); // nivel
+        renderBitmapString(750,550, (void*)font2, setnivel(56));
+
+
     }
 };
