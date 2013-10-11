@@ -7,13 +7,12 @@ class Texto
       int font;
       int font2;
       char buff[30];
-      double t;
 
     Texto(){
     }
 
     void set(){
-        font=(int)GLUT_BITMAP_TIMES_ROMAN_24;
+        font=(int)GLUT_BITMAP_HELVETICA_18;
         font2=(int)GLUT_BITMAP_HELVETICA_12; 
     }
 
