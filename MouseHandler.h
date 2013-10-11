@@ -1,4 +1,4 @@
-#include "launcher.h"
+#include "ObjectsLauncher.h"
 
 class MouseHandler
 {
@@ -35,7 +35,7 @@ public:
                 glVertex2f(puntos[i]->x, WIN_ALTO - puntos[i]->y);
                 glEnd();
             }
-            if(puntos.size() > 20)
+            if(puntos.size() > 10)
                 puntos.erase(puntos.begin());
         }
         else{
@@ -43,7 +43,6 @@ public:
         }
         if(timer == 0 && drawer){
             puntos.clear();
-            flag = false;
             timer = 500;
             drawer = false;
         }

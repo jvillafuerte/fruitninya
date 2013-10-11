@@ -16,6 +16,8 @@
 
 using namespace std;
 
+int s[2] = {-1, 1};
+
 class Punto
 {
 public:
@@ -46,6 +48,8 @@ public:
     GLfloat tiempo;
     GLfloat x0, y0;
     GLfloat vel_x, vel_y;
+    GLfloat rot;
+    GLfloat sentido;
     Objeto(){
         centro = new Punto(0, 0);
         tam=0;
@@ -54,6 +58,9 @@ public:
         tiempo =0;
         velx= vel*cos(ang * PI / 180);
         vely= vel*sin(ang * PI / 180);
+        rot = rand() % 50;
+        int i = rand() % 2;
+        sentido = s[i];
     }
 
     Objeto(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_){
@@ -97,8 +104,20 @@ public:
         glEnd();
     }
     void mover(){
+        rot += 0.1 * sentido;
         tiempo+=0.01;
         centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
         centro->x = x0  + vel_x * tiempo;
+    }
+    void rotar(){
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glPushMatrix();
+        glTranslatef(centro->x, centro->y, 0);
+        glRotated(rot, 0, 0, 1);
+        glTranslatef(-centro->x, -centro->y, 0);
+        dibujar();
+        glPopMatrix();
+
     }
 };
