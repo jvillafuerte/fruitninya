@@ -1,33 +1,16 @@
-#include "MouseHandler.h"
+#include "GameHandler.h"
 
-lanzar o;
-int i=0;
-GLfloat angRotac=10;
-MouseHandler mh;
+MouseHandler * mh;
+GameHandler * gm;
+ObjectsLauncher * launcher;
+
 
 void displayFn(){
-
-    glMatrixMode(GL_MODELVIEW);
     glClear(GL_COLOR_BUFFER_BIT);
-    glLoadIdentity();
-    
-    mh.dibujar();
-    
-    if(o.objects[i].centro->y<0){
-        i++;
-    }
-
-    glPushMatrix();
-    glTranslatef(o.objects[i].centro->x,o.objects[i].centro->y,0);
-    glRotated(angRotac,0,0,1);
-    glTranslatef(-o.objects[i].centro->x,-o.objects[i].centro->y,0);  
-    o.objects[i].dibujar();
-    o.objects[i].mover();
-
-    glPopMatrix();
+    mh->dibujar();
+    gm->run();
     glutSwapBuffers();
     glFlush();
-    angRotac+=0.1;  
 }
 
 void MiReshapeFunc(GLsizei w, GLsizei h){
@@ -40,16 +23,19 @@ void MiReshapeFunc(GLsizei w, GLsizei h){
 }
 
 void passive_mouseFunc(int x, int y){
-    mh.setDrawer(false);
+    mh->setDrawer(false);
 }
 
 void motion_mouseFunc(int x, int y){
-    mh.addClick(x, y);
-    mh.setDrawer(true);
+    mh->addClick(x, y);
+    mh->setDrawer(true);
 }
 
 void Init(void){
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    // glEnable(GL_FLAT);
+    // glEnable(GL_SMOOTH);
+    //glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 static void idle(void)
@@ -59,7 +45,13 @@ static void idle(void)
 
 int main(int argc, char ** argv){
     srand (time(NULL));
-    o.set(200);
+    // o.set(200);
+    mh = new MouseHandler();
+    gm = new GameHandler();
+    launcher = new ObjectsLauncher();
+    // launcher->set_max(5);
+    // launcher->create_objects();
+    gm->set(mh, launcher);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(WIN_ANCHO, WIN_ALTO);
