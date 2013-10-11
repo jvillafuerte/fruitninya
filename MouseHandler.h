@@ -15,7 +15,7 @@ public:
     }
 
     void addClick(GLint x, GLint y){
-        Punto * p = new Punto(x, y);
+        Punto * p = new Punto(x, WIN_ALTO - y);
         puntos.push_back(p);
     }
 
@@ -31,8 +31,8 @@ public:
                 glLineWidth(i % 100);
                 glBegin(GL_LINES);
                 glColor3f(1.0f, 1.0f, 1.0f);
-                glVertex2f(puntos[i-1]->x, WIN_ALTO - puntos[i-1]->y);
-                glVertex2f(puntos[i]->x, WIN_ALTO - puntos[i]->y);
+                glVertex2f(puntos[i-1]->x, puntos[i-1]->y);
+                glVertex2f(puntos[i]->x, puntos[i]->y);
                 glEnd();
             }
             if(puntos.size() > 10)

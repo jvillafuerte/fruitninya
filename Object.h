@@ -51,7 +51,7 @@ public:
     GLfloat vel_x, vel_y;
     GLfloat rot;
     GLfloat sentido;
-
+    bool dibujar_;
     Objeto(){
         centro = new Punto(0, 0);
         tam=0;
@@ -63,6 +63,7 @@ public:
         rot = rand() % 50;
         int i = rand() % 2;
         sentido = s[i];
+        dibujar_ = true;
     }
 
     Objeto(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_){
@@ -72,6 +73,7 @@ public:
         vel=vel_;
         velx= vel*cos(ang * PI / 180);
         vely= vel*sin(ang * PI / 180);
+        dibujar_ = true;
 
     }
     void set(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_){
@@ -89,6 +91,7 @@ public:
             vel_x= -1*vel*cos(ang * PI / 180);
             vel_y= -1*vel*sin(ang * PI / 180);
         }
+        dibujar_ = true;
     }
 
     ~Objeto(){
@@ -97,13 +100,15 @@ public:
 
     }
     void dibujar(){
-        glBegin(GL_QUADS);
-        glColor3f(1.0,0.0,0.0);;
-        glVertex3f(centro->x-tam, centro->y-tam, 0);
-        glVertex3f(centro->x+tam, centro->y-tam, 0);
-        glVertex3f(centro->x+tam, centro->y+tam, 0);
-        glVertex3f(centro->x-tam, centro->y+tam, 0);
-        glEnd();
+        if(dibujar_){
+            glBegin(GL_QUADS);
+            glColor3f(1.0,0.0,0.0);
+            glVertex3f(centro->x-tam, centro->y-tam, 0);
+            glVertex3f(centro->x+tam, centro->y-tam, 0);
+            glVertex3f(centro->x+tam, centro->y+tam, 0);
+            glVertex3f(centro->x-tam, centro->y+tam, 0);
+            glEnd();
+        }
     }
     void mover(){
         rot += 0.1 * sentido;
@@ -122,11 +127,12 @@ public:
         glPopMatrix();
 
     }
-    void cortar(Objeto * &a , Objeto * &b)
+    void cortar(Objeto * & a , Objeto * & b)
     {
-        a=new Objeto;
-        b=new Objeto;
-        a->set(200,200,tam/2,ang-40,vel);
-        b->set(400,200,tam/2,-ang,vel);
+        a->set(centro->x, centro->y, tam/2, ang+20, 5);
+        b->set(centro->x, centro->y, tam/2, ang-20, 5);
+    }
+    void set_dibujar(bool val){
+        dibujar_ = val;
     }
 };
