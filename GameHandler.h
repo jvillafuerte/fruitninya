@@ -1,6 +1,5 @@
 #include "texto.h"
 
-
 class GameHandler
 {
 public:

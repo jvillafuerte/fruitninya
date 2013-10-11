@@ -1,10 +1,10 @@
 #include "MouseHandler.h"
-    
+
 class Texto
 {
     public:    
-      int font;
-      int font2;
+      ptrdiff_t font;
+      ptrdiff_t font2;
       char buff[30];
 
     Texto(){
@@ -12,8 +12,8 @@ class Texto
     }
 
     void set(){
-        font=(int)GLUT_BITMAP_HELVETICA_18;
-        font2=(int)GLUT_BITMAP_HELVETICA_12; 
+        font=(ptrdiff_t)GLUT_BITMAP_HELVETICA_18;
+        font2=(ptrdiff_t)GLUT_BITMAP_HELVETICA_12; 
     }
 
     void resetPerspectiveProjection() {
