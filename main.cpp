@@ -3,12 +3,13 @@
 MouseHandler * mh;
 GameHandler * gm;
 ObjectsLauncher * launcher;
-
+Texto * tex;
 
 void displayFn(){
     glClear(GL_COLOR_BUFFER_BIT);
     mh->dibujar();
     gm->run();
+    tex->print();
     glutSwapBuffers();
     glFlush();
 }
@@ -46,12 +47,14 @@ static void idle(void)
 int main(int argc, char ** argv){
     srand (time(NULL));
     // o.set(200);
+    tex = new Texto();
     mh = new MouseHandler();
     gm = new GameHandler();
     launcher = new ObjectsLauncher();
     // launcher->set_max(5);
     // launcher->create_objects();
     gm->set(mh, launcher);
+    tex->set();
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(WIN_ANCHO, WIN_ALTO);

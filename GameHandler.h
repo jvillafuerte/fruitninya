@@ -1,4 +1,5 @@
 #include "MouseHandler.h"
+#include "texto.h"
 
 
 class GameHandler

@@ -1,19 +1,19 @@
 #include <GL/glut.h>
 #include <GL/glu.h>
-
+    
 class Texto
 {
     public:    
       int font;
       int font2;
       char buff[30];
-      double t;
 
     Texto(){
+
     }
 
     void set(){
-        font=(int)GLUT_BITMAP_TIMES_ROMAN_24;
+        font=(int)GLUT_BITMAP_HELVETICA_18;
         font2=(int)GLUT_BITMAP_HELVETICA_12; 
     }
 
@@ -32,6 +32,7 @@ class Texto
     }
 
     void print(){
+        glColor3f(1.0f, 1.0f, 0.0f);
         renderBitmapString(350,580,(void *)font,"Fruit Ninja");
         renderBitmapString(650,550, (void*)font2, "Frutas Cortadas: ");   
         renderBitmapString(650,580, (void*)font2, "Nivel: "); 
