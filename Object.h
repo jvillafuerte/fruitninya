@@ -36,6 +36,7 @@ public:
     }
 };
 
+
 class Objeto
 {
 public:
@@ -50,6 +51,7 @@ public:
     GLfloat vel_x, vel_y;
     GLfloat rot;
     GLfloat sentido;
+
     Objeto(){
         centro = new Punto(0, 0);
         tam=0;
@@ -108,7 +110,7 @@ public:
         tiempo+=0.01;
         centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
         centro->x = x0  + vel_x * tiempo;
-    }
+    } 
     void rotar(){
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
@@ -119,5 +121,12 @@ public:
         dibujar();
         glPopMatrix();
 
+    }
+    void cortar(Objeto * &a , Objeto * &b)
+    {
+        a=new Objeto;
+        b=new Objeto;
+        a->set(200,200,tam/2,ang-40,vel);
+        b->set(400,200,tam/2,-ang,vel);
     }
 };

@@ -1,6 +1,7 @@
 #include "Object.h"
 #include "constantes.h"
 
+Objeto * a,*b;
 class ObjectsLauncher
 {
 public:
@@ -29,6 +30,12 @@ public:
         {
             objetos[i]->mover();
             objetos[i]->rotar();
+            objetos[i]->cortar(a,b);
+            a->mover();
+            a->rotar();
+            b->mover();
+            b->rotar();
+
         }
     }
     bool get_status(){
