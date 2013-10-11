@@ -9,7 +9,6 @@ void displayFn(){
     glClear(GL_COLOR_BUFFER_BIT);
     mh->dibujar();
     gm->run();
-    tex->print();
     glutSwapBuffers();
     glFlush();
 }
@@ -34,9 +33,6 @@ void motion_mouseFunc(int x, int y){
 
 void Init(void){
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    // glEnable(GL_FLAT);
-    // glEnable(GL_SMOOTH);
-    //glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 static void idle(void)
@@ -46,15 +42,13 @@ static void idle(void)
 
 int main(int argc, char ** argv){
     srand (time(NULL));
-    // o.set(200);
+    
     tex = new Texto();
+    launcher = new ObjectsLauncher();
     mh = new MouseHandler();
     gm = new GameHandler();
-    launcher = new ObjectsLauncher();
-    // launcher->set_max(5);
-    // launcher->create_objects();
-    gm->set(mh, launcher);
-    tex->set();
+    gm->set(mh, launcher, tex);
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(WIN_ANCHO, WIN_ALTO);

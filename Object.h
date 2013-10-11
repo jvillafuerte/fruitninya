@@ -52,6 +52,7 @@ public:
     GLfloat rot;
     GLfloat sentido;
     bool dibujar_;
+
     Objeto(){
         centro = new Punto(0, 0);
         tam=0;
@@ -76,6 +77,7 @@ public:
         dibujar_ = true;
 
     }
+
     void set(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_){
         centro = new Punto(xx, yy);
         tam=tamm;
@@ -110,12 +112,14 @@ public:
             glEnd();
         }
     }
+
     void mover(){
         rot += 0.1 * sentido;
         tiempo+=0.01;
         centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
         centro->x = x0  + vel_x * tiempo;
-    } 
+    }
+
     void rotar(){
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
@@ -127,11 +131,13 @@ public:
         glPopMatrix();
 
     }
+
     void cortar(Objeto * & a , Objeto * & b)
     {
         a->set(centro->x, centro->y, tam/2, ang+20, 5);
         b->set(centro->x, centro->y, tam/2, ang-20, 5);
     }
+    
     void set_dibujar(bool val){
         dibujar_ = val;
     }
