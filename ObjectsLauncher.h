@@ -20,7 +20,7 @@ public:
         for (int i = 0; i < max; i++)
         {
             objetos.push_back(new Objeto());
-            objetos[i]->set((rand()%400)+200,1,(rand()%20)+10,((rand()%10)+80)*-1,
+            objetos[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),(rand()%20)+10,((rand()%10)+80)*objetos[i]->sentido,
                     (rand()%20)+80);
         }
     }
@@ -33,7 +33,7 @@ public:
     }
     bool get_status(){
         for (int i = 0; i < max; i++){
-            if(objetos[i]->centro->y > 0){
+            if(objetos[i]->centro->y > -ORIGEN_Y){
                 empty = false;
                 return false;
             }
