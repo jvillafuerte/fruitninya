@@ -4,11 +4,11 @@
 class GameHandler
 {
 public:   //punteros  a los demas objetos
-    MouseHandler * mousehandler;          
-    ObjectsLauncher * objectslauncher;
-    Texto * tex;
-    vector<Objeto *> cortados;
-    int nivel, frutas;
+MouseHandler * mousehandler;          
+ObjectsLauncher * objectslauncher;
+Texto * tex;
+vector<Objeto *> cortados;
+int nivel, frutas;
     bool estado;          //el estado del juego si a terminado (en funcion a bomba)
 
     GameHandler(){
@@ -53,12 +53,12 @@ public:   //punteros  a los demas objetos
     }
 
     //compara la posicion del mause y del punto centro de objeto, tambien actualiza el contador de frutas cortdas y nivel
-    void detectar_corte(){     
-        for (int i = 0; i < mousehandler->puntos.size(); i++)
-        {
+    //Se hace calculando la distancia euclideana
+    void detectar_corte(){
+        if(mousehandler->puntos.size())
             for (int j = 0; j < objectslauncher->objetos.size(); j++)
             {
-                if(distancia(mousehandler->puntos[i], 
+                if(distancia(mousehandler->puntos[mousehandler->puntos.size()-1], 
                    objectslauncher->objetos[j]->centro) <= objectslauncher->objetos[j]->tam)
                 {
                     if(objectslauncher->objetos[j]->es_bomba) {
@@ -76,7 +76,6 @@ public:   //punteros  a los demas objetos
                 }
             }
         }
-    }
-    
-    ~GameHandler(){}
-};
+
+        ~GameHandler(){}
+    };

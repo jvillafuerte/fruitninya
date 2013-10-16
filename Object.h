@@ -18,7 +18,7 @@ using namespace std;
 
 int s[2] = {-1, 1};
 
-class Punto   // Centro de la Figura
+class Punto
 {
 public:
     GLfloat x;
@@ -36,23 +36,23 @@ public:
     }
 };
 
-class Objeto  //Clase padre (Fruta y Bombas)
+class Objeto
 {
 public:
     Punto * centro;
-    GLfloat tam;  
+    GLfloat tam;
     GLfloat ang;
     GLfloat vel;
-    GLfloat velx,vely;     //Velocidades Iniciales
+    GLfloat velx;
+    GLfloat vely;
     GLfloat tiempo;
-    GLfloat x0, y0;        //Posiciones Iniciales  
-    GLfloat vel_x, vel_y;  //Velocidades Variantes
-    GLfloat rot;           //Angulo de Rotacion
-    GLfloat sentido;       // 1 y -1 izquierda y derecha
-    bool dibujar_;         // status para dibujar
-    bool es_bomba;         // status si es bomba
-    GLfloat R, G, B;       // colores random
-
+    GLfloat x0, y0;
+    GLfloat vel_x, vel_y;
+    GLfloat rot;
+    GLfloat sentido;
+    bool dibujar_;
+    bool es_bomba;
+    GLfloat R, G, B;
     Objeto(){
         centro = new Punto(0, 0);
         tam=0;
@@ -65,7 +65,7 @@ public:
         int i = rand() % 2;
         sentido = s[i];
         dibujar_ = true;
-        es_bomba = false;      
+        es_bomba = false;
     }
 
     Objeto(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_){
@@ -73,21 +73,20 @@ public:
         tam=tamm;
         ang=angg;
         vel=vel_;
-        velx= vel*cos(ang * PI / 180);  // Obtencion velocidad en X , segun el angulo
-        vely= vel*sin(ang * PI / 180);  // Obtencion velocidad en Y , segun el angulo
+        velx= vel*cos(ang * PI / 180);
+        vely= vel*sin(ang * PI / 180);
         dibujar_ = true;
 
     }
 
-    //Funcion Set para la modificacion de datos
-    void set(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_, GLfloat R=1, GLfloat G=0, GLfloat B=0){ 
-        centro = new Punto(xx, yy);   
+    void set(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_, GLfloat R=1, GLfloat G=0, GLfloat B=0){
+        centro = new Punto(xx, yy);
         tam=tamm;
         ang=angg;
         vel=vel_;
         y0 = yy;
         x0 = xx;
-        if(ang>0){                          //La direccion del objeto el cual sera lanzado
+        if(ang>0){
             vel_x= vel*cos(ang * PI / 180);
             vel_y= vel*sin(ang * PI / 180);
         }else
@@ -106,10 +105,8 @@ public:
         delete centro;
 
     }
-
-    //Los metodos virtuales evaluaran si la funcion es llamada en el Padre o en el Hijo
     virtual void dibujar(){
-        if(dibujar_){         
+        if(dibujar_){
             glBegin(GL_QUADS);
             glColor3f(R, G, B);
             glVertex3f(centro->x-tam, centro->y-tam, 0);
@@ -139,7 +136,7 @@ public:
 
     }
 
-    virtual void cortar(Objeto * & a , Objeto * & b)  // Recibe 2 Objetos "hijos", los cuales seran inicializados
+    virtual void cortar(Objeto * & a , Objeto * & b)
     {
         a->set(centro->x, centro->y, tam/2, ang+20, 5, this->R, this->G, this->B);
         b->set(centro->x, centro->y, tam/2, ang-20, 5, this->R, this->G, this->B);
@@ -150,10 +147,7 @@ public:
     }
 };
 
-
-//La clase Bomba heredara de objeto con la diferencia que es una figura constante de radio 20 ,
-// y un parametro extra si es bomba el cual avisara a la clase "GameHandler.h" para enviar un mensaje
-class Bomba:public Objeto  
+class Bomba:public Objeto
 {
 public:
     int radio;
@@ -203,24 +197,21 @@ public:
     }
 };
 
-
-//Al igual que la clase Bomba la clase fruta tendra un puntero a funcion la cual contendra 3 metodos de dibujos
-// Y seran llamados con un metodo random
 class Fruta:public Objeto
 {
 public:
     GLfloat R, G, B;
-    typedef void (Fruta::*funciones)();   //Puntero a funcion en una clase
+    typedef void (Fruta::*funciones)();
     funciones func[2];
-    funciones dibuja;                     //Puntero a funcion para dibujar 
-    int indice;                           //Para ver cual de las fucnciones se dibujará
-
+    funciones dibuja;
+    int indice;
+    // void (*array_dibujar_func[2])();
 
     Fruta(){
         R = 0.3 + rand() % 2;
         G = 0.3 + rand() % 2;
         B = 0.3 + rand() % 2;
-        func[0] = &Fruta::cuadrado;      
+        func[0] = &Fruta::cuadrado;
         func[1] = &Fruta::rectangulo;
         func[2] = &Fruta::triangulo;
         indice = rand() % 3;
@@ -264,7 +255,7 @@ public:
     }
 
     void dibujar(){
-        (this->*dibuja)();   // Llama al puntero funcion dibuja, el cual invoca un metodo que le toco al iniciar con el indice
+        (this->*dibuja)();
     }
 
     void mover(){
