@@ -3,10 +3,10 @@
 class MouseHandler
 {
 public:
-    vector<Punto *> puntos;
-    bool flag;
-    int timer;
-    bool drawer;
+    vector<Punto *> puntos;   // La secuencia de puntos por los que pasa el mouse cuando se hace click!
+    bool flag;      
+    int timer;  //Tiempo que permanecera en la pantalla el efecto
+    bool drawer;  
 
     MouseHandler(){
         flag = false;
@@ -15,14 +15,16 @@ public:
     }
 
     void addClick(GLint x, GLint y){
-        Punto * p = new Punto(x, WIN_ALTO - y);
+        Punto * p = new Punto(x, WIN_ALTO - y); //Recibe la coordenana y lo agrega al vector 
         puntos.push_back(p);
     }
 
     void setDrawer(bool state){
-        drawer = state;
+        drawer = state;             //Para ver si se  dibuja o no
     }
 
+    //Recorrer el vector de puntos y dibujar lineas entre cada dos puntos del vector
+    //El grosor de la linea va aumentada segun la posicion del indice del vector
     void dibujar(){
         if(drawer)
         {

@@ -1,6 +1,7 @@
 #include "Object.h"
 #include "constantes.h"
 
+//La clase ObjectLauncher sera la encargada de lanzar un vector de objetos ( Frutas y Bombas)
 class ObjectsLauncher
 {
 public:
@@ -24,13 +25,13 @@ public:
     void create_objects(){
         empty = false;
         int i = 0;
-        for ( ; i < max_frutas; i++)
+        for ( ; i < max_frutas; i++)                //Crea un numero max de frutas en el vector de objetos 
         {
             objetos.push_back(new Fruta());
             objetos[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),(rand()%20)+10,((rand()%10)+80)*objetos[i]->sentido,
                             (rand()%20)+80);
         }
-        for (; i < (max_frutas + max_bombas); i++)
+        for (; i < (max_frutas + max_bombas); i++)  //Crea un numero maximo de bombas en el vector de objetos
         {
             objetos.push_back(new Bomba());
             objetos[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),(rand()%20)+10,((rand()%10)+80)*objetos[i]->sentido,
@@ -40,7 +41,7 @@ public:
 
     void run(){
         int max = max_frutas + max_bombas;
-        for (int i = 0; i < max; i++)
+        for (int i = 0; i < max; i++)       //Manda a ejecutar todos los datos del vector creado.
         {
             objetos[i]->mover();
             objetos[i]->rotar();
@@ -50,17 +51,17 @@ public:
     bool get_status(){
         int max = max_frutas + max_bombas;
         for (int i = 0; i < max; i++){
-            if(objetos[i]->centro->y > -ORIGEN_Y){
-                empty = false;
+            if(objetos[i]->centro->y > -ORIGEN_Y){      //verifica si el objeto esta fuera de la pantalla
+                empty = false;                          
                 return false;
             }
         }
-        empty = true;
+        empty = true;        //Si es que recorrio y todos salieron entonces el vector de objetos estara vacio.
         return empty;
     }
     
     void destroy(){
-        objetos.clear();
+        objetos.clear();   
     }
 
     ~ObjectsLauncher(){}
