@@ -10,7 +10,7 @@ public:
 
     MouseHandler(){
         flag = false;
-        timer = 600;
+        timer = 100;
         drawer = false;
     }
 
