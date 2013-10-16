@@ -133,7 +133,6 @@ public:
         glTranslatef(-centro->x, -centro->y, 0);
         dibujar();
         glPopMatrix();
-
     }
 
     virtual void cortar(Objeto * & a , Objeto * & b)
@@ -176,25 +175,7 @@ public:
             glEnd();
         }
     }
-    
-    void mover(){
-        rot += 0.1 * sentido;
-        tiempo+=0.01;
-        centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
-        centro->x = x0  + vel_x * tiempo;
-    }
 
-    void rotar(){
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        glPushMatrix();
-        glTranslatef(centro->x, centro->y, 0);
-        glRotated(rot, 0, 0, 1);
-        glTranslatef(-centro->x, -centro->y, 0);
-        dibujar();
-        glPopMatrix();
-
-    }
 };
 
 class Fruta:public Objeto
@@ -205,7 +186,6 @@ public:
     funciones func[2];
     funciones dibuja;
     int indice;
-    // void (*array_dibujar_func[2])();
 
     Fruta(){
         R = 0.3 + rand() % 2;
@@ -219,6 +199,7 @@ public:
     }
     ~Fruta(){}
 
+    //funcion que dibuja un cuadrado
     void cuadrado(){
         if(dibujar_){
             glBegin(GL_QUADS);
@@ -231,6 +212,7 @@ public:
         }
     }
 
+    //funcion que dibuja un rectangulo
     void rectangulo(){
         if(dibujar_){
             glBegin(GL_QUADS);
@@ -243,6 +225,7 @@ public:
         }
     }
 
+    //funcion que dibuja un triangulo
     void triangulo(){
         if(dibujar_){
             glBegin(GL_TRIANGLES);
@@ -254,26 +237,9 @@ public:
         }
     }
 
+    //ejecuta alguna de las funciones de arriba segun fue asignado aleatoriamente en el constructor
     void dibujar(){
         (this->*dibuja)();
-    }
-
-    void mover(){
-        rot += 0.1 * sentido;
-        tiempo += 0.01;
-        centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
-        centro->x = x0  + vel_x * tiempo;
-    }
-
-    void rotar(){
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        glPushMatrix();
-        glTranslatef(centro->x, centro->y, 0);
-        glRotated(rot, 0, 0, 1);
-        glTranslatef(-centro->x, -centro->y, 0);
-        dibujar();
-        glPopMatrix();
     }
 
     void cortar(Objeto * & a , Objeto * & b)
@@ -281,5 +247,4 @@ public:
         a->set(centro->x, centro->y, tam/2, ang+20, 5, this->R, this->G, this->B);
         b->set(centro->x, centro->y, tam/2, ang-20, 5, this->R, this->G, this->B);
     }
-
 };

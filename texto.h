@@ -5,7 +5,7 @@ class Texto
 public:
     ptrdiff_t font;    //fuente 1
     ptrdiff_t font2;   //fuente 2
-    char buff[30];     //alancenmiento
+    char buff[30];     //almncenamiento
     int nivel, frutas;  
     bool estado;       //para ver si imprime el texto de termino juego
     
@@ -41,14 +41,16 @@ public:
     }
 
     void print(){
-        glColor3f(1.0f, 1.0f, 0.0f);
+        glColor3f(1.0f, 1.0f, 1.0f);
         renderBitmapString(350,580,(void *)font,"Fruit Ninja");
         renderBitmapString(650,550, (void*)font2, "Frutas Cortadas: ");   
         renderBitmapString(650,580, (void*)font2, "Nivel: ");
         renderBitmapString(690,580, (void*)font2, to_char(nivel));
         renderBitmapString(750,550, (void*)font2, to_char(frutas));
-        if(estado)
+        if(estado){
+            glColor3f(1.0f, 0.0f, 0.0f);
             renderBitmapString(350,350,(void *)font,"Perdiste!");
+        }
     }
 
     void set_nivel(int n){

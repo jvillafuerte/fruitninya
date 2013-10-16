@@ -4,12 +4,10 @@ class MouseHandler
 {
 public:
     vector<Punto *> puntos;   // La secuencia de puntos por los que pasa el mouse cuando se hace click!
-    bool flag;      
     int timer;  //Tiempo que permanecera en la pantalla el efecto
     bool drawer;  
 
     MouseHandler(){
-        flag = false;
         timer = 100;
         drawer = false;
     }
