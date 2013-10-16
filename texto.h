@@ -3,13 +3,13 @@
 class Texto
 {
 public:
-    ptrdiff_t font;
-    ptrdiff_t font2;
-    char buff[30];
-    int nivel, frutas;
-    bool estado;
+    ptrdiff_t font;    //fuente 1
+    ptrdiff_t font2;   //fuente 2
+    char buff[30];     //alancenmiento
+    int nivel, frutas;  
+    bool estado;       //para ver si imprime el texto de termino juego
     
-    Texto(){
+    Texto(){  // inicilizador
         font=(ptrdiff_t)GLUT_BITMAP_HELVETICA_18;
         font2=(ptrdiff_t)GLUT_BITMAP_HELVETICA_12;
         nivel = 1;
@@ -20,19 +20,19 @@ public:
     void set(){
     }
 
-    char * to_char(int nivel)
+    char * to_char(int nivel)    //convertir de entero a string
     {
         sprintf (buff, "%d", nivel);
         return buff;
     }
 
-    void resetPerspectiveProjection() {
+    void resetPerspectiveProjection() {   //reinicia la prespectiva de la preyeccion
         glMatrixMode(GL_PROJECTION);
         glPopMatrix();
         glMatrixMode(GL_MODELVIEW);
     } 
 
-    void renderBitmapString(float x, float y, void *font,const char *string){
+    void renderBitmapString(float x, float y, void *font,const char *string){   //renderizacion
         const char *c;
         glRasterPos2f(x, y);
         for (c=string; *c != '\0'; c++) {

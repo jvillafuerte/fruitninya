@@ -3,13 +3,13 @@
 
 class GameHandler
 {
-public:
-    MouseHandler * mousehandler;
+public:   //punteros  a los demas objetos
+    MouseHandler * mousehandler;          
     ObjectsLauncher * objectslauncher;
     Texto * tex;
     vector<Objeto *> cortados;
     int nivel, frutas;
-    bool estado;
+    bool estado;          //el estado del juego si a terminado (en funcion a bomba)
 
     GameHandler(){
         estado = false;
@@ -25,7 +25,7 @@ public:
         frutas = 0;
     }
 
-    void run(){
+    void run(){          // lanzador , verifica si en juego sigue o ya termino
         if(!estado){
             objectslauncher->run();
             if(objectslauncher->get_status()){
@@ -44,7 +44,7 @@ public:
         tex->print();
     }
 
-    void mover_cortados(){
+    void mover_cortados(){     // mueve los dos objetos resultantes del corte
         for (int i = 0; i < cortados.size(); i++)
         {
             cortados[i]->mover();
@@ -52,7 +52,8 @@ public:
         }
     }
 
-    void detectar_corte(){
+    //compara la posicion del mause y del punto centro de objeto, tambien actualiza el contador de frutas cortdas y nivel
+    void detectar_corte(){     
         for (int i = 0; i < mousehandler->puntos.size(); i++)
         {
             for (int j = 0; j < objectslauncher->objetos.size(); j++)
