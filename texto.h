@@ -7,12 +7,14 @@ public:
     ptrdiff_t font2;
     char buff[30];
     int nivel, frutas;
+    bool estado;
     
     Texto(){
         font=(ptrdiff_t)GLUT_BITMAP_HELVETICA_18;
         font2=(ptrdiff_t)GLUT_BITMAP_HELVETICA_12;
         nivel = 1;
         frutas = 0;
+        estado = false;
     }
 
     void set(){
@@ -45,6 +47,8 @@ public:
         renderBitmapString(650,580, (void*)font2, "Nivel: ");
         renderBitmapString(690,580, (void*)font2, to_char(nivel));
         renderBitmapString(750,550, (void*)font2, to_char(frutas));
+        if(estado)
+            renderBitmapString(350,350,(void *)font,"Perdiste!");
     }
 
     void set_nivel(int n){

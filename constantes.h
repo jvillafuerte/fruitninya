@@ -3,3 +3,5 @@
 #define WIN_ALTO 600
 #define PI 3.1415
 #define ORIGEN_Y 200
+#define MAX_OBJETOS 10
+#define MAX_OBJETOS_INICIAL 3

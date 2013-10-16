@@ -10,7 +10,7 @@ public:
 
     MouseHandler(){
         flag = false;
-        timer = 1000;
+        timer = 600;
         drawer = false;
     }
 
@@ -30,7 +30,7 @@ public:
             {
                 glLineWidth(i % 100);
                 glBegin(GL_LINES);
-                glColor3f(1.0f, 1.0f, 1.0f);
+                glColor3f(0.7f, 0.0f, 0.0f);
                 glVertex2f(puntos[i-1]->x, puntos[i-1]->y);
                 glVertex2f(puntos[i]->x, puntos[i]->y);
                 glEnd();
