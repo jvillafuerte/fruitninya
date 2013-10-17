@@ -53,7 +53,7 @@ static void idle(void)
 int main(int argc, char ** argv){
     srand (time(NULL));
 
-    //Se inicializa a los objetos y se agregan al controlador del GameHandler    
+    //Se inicializa a los punteros y se agregan al controlador del Juego (gamehandler)    
     tex = new Texto();
     launcher = new ObjectsLauncher();
     mh = new MouseHandler();
