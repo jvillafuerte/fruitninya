@@ -1,10 +1,11 @@
 #include "texto.h"
 #include "utils.h"
 
+
 class GameHandler
 {
 public:   //punteros  a los demas objetos
-    MouseHandler * mousehandler;          
+    MouseHandler * mousehandler;
     ObjectsLauncher * objectslauncher;
     Texto * tex;
     vector<Objeto *> cortados;
@@ -47,6 +48,7 @@ public:   //punteros  a los demas objetos
     void mover_cortados(){     // mueve los dos objetos resultantes del corte
         for (int i = 0; i < cortados.size(); i++)
         {
+            c_musica *musica = new c_musica( "Sonidos/Choque.wav");
             cortados[i]->mover();
             cortados[i]->rotar();
         }

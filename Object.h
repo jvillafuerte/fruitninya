@@ -13,6 +13,7 @@
 #include <time.h>
 #include <vector>
 #include <iostream>
+#include "Sonido.cpp"
 
 using namespace std;
 
@@ -150,6 +151,7 @@ class Bomba:public Objeto
 {
 public:
     int radio;
+    c_musica *musica2 = new c_musica( "Sonidos/Explosion.wav");
     Bomba(){
         radio = 20;
         es_bomba = true;
@@ -175,6 +177,11 @@ public:
             glEnd();
         }
     }
+    void cortar(Objeto * & a , Objeto * & b)
+    {
+        musica2->reproduce();
+        musica2->para();   // delete musica2;
+    }
 
 };
 
@@ -185,6 +192,7 @@ public:
     typedef void (Fruta::*funciones)();
     funciones func[2];
     funciones dibuja;
+    c_musica *musica = new c_musica( "Sonidos/Choque.wav");
     int indice;
 
     Fruta(){
@@ -244,7 +252,9 @@ public:
 
     void cortar(Objeto * & a , Objeto * & b)
     {
+        musica->reproduce();
         a->set(centro->x, centro->y, tam/2, ang+20, 5, this->R, this->G, this->B);
         b->set(centro->x, centro->y, tam/2, ang-20, 5, this->R, this->G, this->B);
+        musica->para();    //delete musica;
     }
 };

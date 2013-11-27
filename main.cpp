@@ -1,10 +1,14 @@
 #include "GameHandler.h"
 
+
 //Declaro punteros a todas las estructuras
 MouseHandler * mh;
 GameHandler * gm;
 ObjectsLauncher * launcher;
 Texto * tex;
+
+c_sonido *choque;      // -- Sonidos --
+c_sonido *explosion;
 
 
 //Manda a dibujar el recorrido del mouse y se ejecuta la funcion principal "GameHandler"
@@ -13,7 +17,7 @@ void displayFn(){
     mh->dibujar();     
     gm->run();
     glutSwapBuffers();
-    glFlush();
+   // glFlush();
 }
 
 
@@ -59,8 +63,32 @@ int main(int argc, char ** argv){
     mh = new MouseHandler();
     gm = new GameHandler();
     gm->set(mh, launcher, tex);
+    ///////////////////7
+    Inicia_SDL_mixer(); 
+    //Mix_AllocateChannels(2);
+    //choque    = new c_sonido( "Sonidos/DigitalStream.wav", 100, 128 );
+    //explosion = new c_sonido( "Sonidos/Explosion.wav", 1, 128 );
 
+    // Mix_Chunk *sound = Mix_LoadWAV("Sonidos/DigitalStream.wav");
+//Mix_PlayChannel(-1, sound, 0);
+
+    c_musica *musica = new c_musica( "Sonidos/fondo.wav");
+    ///////////////////7
     //Llamada a las funciones de OpenGl
+
+     ///////////////////////
+    musica->reproduce();
+
+    // for (int i = 0; i < 10000; ++i)
+    // {
+    //     if(i==5000)
+    //         musica->para();
+    // }
+    //choque->reproduce();    delete choque;
+    //explosion->para(); delete explosion;
+    // musica->para();    delete musica;
+    
+    ///////////////////////////////7777
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(WIN_ANCHO, WIN_ALTO);
@@ -73,4 +101,6 @@ int main(int argc, char ** argv){
     glutPassiveMotionFunc(passive_mouseFunc);
     Init();
     glutMainLoop();
+    Cierra_SDL_mixer(); 
+   
 }
