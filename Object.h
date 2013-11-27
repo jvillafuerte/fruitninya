@@ -24,16 +24,19 @@ class Punto
 public:
     GLfloat x;
     GLfloat y;
-    Punto(GLfloat xx, GLfloat yy){
+    GLfloat z;
+    Punto(GLfloat xx, GLfloat yy, GLfloat zz=0){
         x=xx;
         y=yy;
+        z=zz;
     }
     Punto(Punto * p){
         x = p->x;
         y = p->y;
+        z = p->z;
     }
     ~Punto(){
-        x=y=0;
+        x=y=z=0;
     }
 };
 
@@ -110,10 +113,10 @@ public:
         if(dibujar_){
             glBegin(GL_QUADS);
             glColor3f(R, G, B);
-            glVertex3f(centro->x-tam, centro->y-tam, 0);
-            glVertex3f(centro->x+tam, centro->y-tam, 0);
-            glVertex3f(centro->x+tam, centro->y+tam, 0);
-            glVertex3f(centro->x-tam, centro->y+tam, 0);
+            glVertex3f(centro->x-tam, centro->y-tam, centro->z);
+            glVertex3f(centro->x+tam, centro->y-tam, centro->z);
+            glVertex3f(centro->x+tam, centro->y+tam, centro->z);
+            glVertex3f(centro->x-tam, centro->y+tam, centro->z);
             glEnd();
         }
     }
@@ -123,11 +126,10 @@ public:
         tiempo+=0.01;
         centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
         centro->x = x0  + vel_x * tiempo;
+        centro->z-=1;
     }
 
     virtual void rotar(){
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
         glPushMatrix();
         glTranslatef(centro->x, centro->y, 0);
         glRotated(rot, 0, 0, 1);
