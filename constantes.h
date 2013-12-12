@@ -5,3 +5,6 @@
 #define ORIGEN_Y 200
 #define MAX_OBJETOS 10
 #define MAX_OBJETOS_INICIAL 3
+#define BOMBA_SONIDO "Sonidos/Explosion.wav"
+#define FRUTA_SONIDO "Sonidos/Choque.wav"
+#define MUSICA_FONDO "Sonidos/fondo.wav"

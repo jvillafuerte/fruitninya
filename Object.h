@@ -13,7 +13,6 @@
 #include <time.h>
 #include <vector>
 #include <iostream>
-#include "Sonido.cpp"
 
 using namespace std;
 
@@ -80,7 +79,6 @@ public:
         velx= vel*cos(ang * PI / 180);
         vely= vel*sin(ang * PI / 180);
         dibujar_ = true;
-
     }
 
     void set(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_, GLfloat R=1, GLfloat G=0, GLfloat B=0){
@@ -126,20 +124,21 @@ public:
         tiempo+=0.01;
         centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
         centro->x = x0  + vel_x * tiempo;
-        centro->z-=1;
     }
 
     virtual void rotar(){
+        // glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
         glPushMatrix();
         glTranslatef(centro->x, centro->y, 0);
         glRotated(rot, 0, 0, 1);
+        // glRotated(rot, 1, 0, 0);
         glTranslatef(-centro->x, -centro->y, 0);
         dibujar();
         glPopMatrix();
     }
 
-    virtual void cortar(Objeto * & a , Objeto * & b)
-    {
+    virtual void cortar(Objeto * & a , Objeto * & b){
         a->set(centro->x, centro->y, tam/2, ang+20, 5, this->R, this->G, this->B);
         b->set(centro->x, centro->y, tam/2, ang-20, 5, this->R, this->G, this->B);
     }
@@ -153,7 +152,6 @@ class Bomba:public Objeto
 {
 public:
     int radio;
-    c_musica *musica2 = new c_musica( "Sonidos/Explosion.wav");
     Bomba(){
         radio = 20;
         es_bomba = true;
@@ -172,18 +170,13 @@ public:
     } 
 
     void dibujar(){ 
-        if(dibujar_)
-        { 
+        if(dibujar_){ 
             glColor3f(1.0,1.0,1.0);
             circle(centro->x,centro->y);
             glEnd();
         }
     }
-    void cortar(Objeto * & a , Objeto * & b)
-    {
-        musica2->reproduce();
-        musica2->para();   // delete musica2;
-    }
+    void cortar(Objeto * & a , Objeto * & b){}
 
 };
 
@@ -192,9 +185,8 @@ class Fruta:public Objeto
 public:
     GLfloat R, G, B;
     typedef void (Fruta::*funciones)();
-    funciones func[2];
+    funciones func[3];
     funciones dibuja;
-    c_musica *musica = new c_musica( "Sonidos/Choque.wav");
     int indice;
 
     Fruta(){
@@ -211,15 +203,18 @@ public:
 
     //funcion que dibuja un cuadrado
     void cuadrado(){
+        static int l = 0;
         if(dibujar_){
+
             glBegin(GL_QUADS);
             glColor3f(R, G, B);
-            glVertex3f(centro->x-tam, centro->y-tam, 0);
-            glVertex3f(centro->x+tam, centro->y-tam, 0);
-            glVertex3f(centro->x+tam, centro->y+tam, 0);
-            glVertex3f(centro->x-tam, centro->y+tam, 0);
+            glVertex3f(centro->x-tam, centro->y-tam, centro->z);
+            glVertex3f(centro->x+tam, centro->y-tam, centro->z);
+            glVertex3f(centro->x+tam, centro->y+tam, centro->z);
+            glVertex3f(centro->x-tam, centro->y+tam, centro->z);
             glEnd();
         }
+        l++;
     }
 
     //funcion que dibuja un rectangulo
@@ -252,11 +247,8 @@ public:
         (this->*dibuja)();
     }
 
-    void cortar(Objeto * & a , Objeto * & b)
-    {
-        musica->reproduce();
+    void cortar(Objeto * & a , Objeto * & b){
         a->set(centro->x, centro->y, tam/2, ang+20, 5, this->R, this->G, this->B);
         b->set(centro->x, centro->y, tam/2, ang-20, 5, this->R, this->G, this->B);
-        musica->para();    //delete musica;
     }
 };
