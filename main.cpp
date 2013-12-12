@@ -7,6 +7,60 @@ GameHandler * gm;
 ObjectsLauncher * launcher;
 Texto * tex;
 
+typedef char BYTE;
+
+GLuint LoadTextureRAW( const char * filename, int wrap )
+{
+    GLuint texture;
+    int width, height;
+    char  * data;
+    FILE * file;
+
+    // open texture data
+    file = fopen( filename, "rb" );
+    if ( file == NULL ) return 0;
+
+    // allocate buffer
+    width = WIN_ANCHO;
+    height = WIN_ALTO;
+    data = (char*) malloc(width * height * 3);
+
+    // read texture data
+    fread( data, width * height * 3, 1, file );
+    fclose( file );
+
+    // allocate a texture name
+    glGenTextures( 1, &texture );
+
+    // select our current texture
+    glBindTexture( GL_TEXTURE_2D, texture );
+
+    // select modulate to mix texture with color for shading
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+
+    // when texture area is small, bilinear filter the closest mipmap
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                     GL_LINEAR_MIPMAP_NEAREST );
+    // when texture area is large, bilinear filter the first mipmap
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+    // if wrap is true, the texture wraps over at the edges (repeat)
+    //       ... false, the texture ends at the edges (clamp)
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+                     wrap ? GL_REPEAT : GL_CLAMP );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+                     wrap ? GL_REPEAT : GL_CLAMP );
+
+    // build our texture mipmaps
+    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,
+                       GL_RGB, GL_UNSIGNED_BYTE, data );
+
+    // free buffer
+    free( data );
+
+    return texture;
+}
+
 //Manda a dibujar el recorrido del mouse y se ejecuta la funcion principal "GameHandler"
 void displayFn(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -15,9 +69,27 @@ void displayFn(){
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
     glLightfv(GL_LIGHT0, GL_AMBIENT, color);
-    // glColor3f(0.5,0.5,0.5);
+    //glColor3f(0.5,0.5,0.5);
     mh->dibujar();
     gm->run();
+
+    /****/
+    glEnable(GL_TEXTURE_2D);
+    GLuint texture = LoadTextureRAW("ola.bmp",0);
+    glBegin(GL_POLYGON);
+            glColor3f(0, 0, 1);
+
+            glTexCoord2f(0.0f, 1.0f); 
+            glVertex3f(0,0,0);
+            glTexCoord2f(1.0f, 1.0f);
+            glVertex3f(WIN_ANCHO,0,0);
+            glTexCoord2f(1.0f, 1.0f);
+            glVertex3f(WIN_ANCHO,WIN_ALTO,0);
+            glTexCoord2f(0.0f, 1.0f);
+            glVertex3f(0,WIN_ALTO,0);
+    glEnd();
+    glDisable(GL_TEXTURE_2D); 
+
     glutSwapBuffers();
     // glFlush();
 }
