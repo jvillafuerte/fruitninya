@@ -1,5 +1,7 @@
 #include "texto.h"
 #include "utils.h"
+#include <unistd.h>
+
 
 
 class GameHandler
@@ -42,7 +44,10 @@ public:   //punteros  a los demas objetos
         }
         tex->set_nivel(nivel);
         tex->set_frutas(frutas);
+        tex->actualizar_tiempo();
         tex->print();
+        controlar_tiempo();
+        set_nivel();
     }
 
     void mover_cortados(){     // mueve los dos objetos resultantes del corte
@@ -57,6 +62,7 @@ public:   //punteros  a los demas objetos
     //compara la posicion del mause y del punto centro de objeto, tambien actualiza el contador de frutas cortdas y nivel
     //Se hace calculando la distancia euclideana
     void detectar_corte(){
+        int combo=0;
         if(mousehandler->puntos.size()){
             for (int j = 0; j < objectslauncher->objetos.size(); j++)
             {
@@ -71,14 +77,40 @@ public:   //punteros  a los demas objetos
                     cortados.push_back(new Objeto);
                     cortados.push_back(new Objeto);
                     int max = cortados.size();
+                    combo++;
                     objectslauncher->objetos[j]->cortar(cortados[max-1], cortados[max-2]);
                     objectslauncher->objetos.erase(objectslauncher->objetos.begin() + j);
                     frutas++;
-                    nivel = 1 + frutas / 10;
+                    tex->puntaje++;
+                    if (combo==3)
+                    {
+                        tex->puntaje+= 3;
+                    }
+                    if (combo==4)
+                    {
+                        tex->puntaje+= 8;
+                    }
+
                 }
+
             }
+
         }
     }
 
+    void controlar_tiempo(){
+        if(tex->tiempo <= 0){
+            tex->tiempo_terminado = true;
+            estado = true;
+        }
+    }
+
+    void set_nivel(){
+        if (tex->tiempo % 15 == 0 && tex->tiempo>=0)
+        {
+            nivel=7-tex->tiempo/15;
+
+        }
+    }
     ~GameHandler(){}
 };

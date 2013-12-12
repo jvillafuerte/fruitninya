@@ -132,7 +132,7 @@ public:
         glPushMatrix();
         glTranslatef(centro->x, centro->y, 0);
         glRotated(rot, 0, 0, 1);
-        // glRotated(rot, 1, 0, 0);
+        glRotated(rot, 1, 0, 0);
         glTranslatef(-centro->x, -centro->y, 0);
         dibujar();
         glPopMatrix();

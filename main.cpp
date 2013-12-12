@@ -1,5 +1,5 @@
 #include "GameHandler.h"
-// #include "SOIL.h"
+#include "SOIL.h"
 
 //Declaro punteros a todas las estructuras
 MouseHandler * mh;
