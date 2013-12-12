@@ -82,6 +82,10 @@ public:
         renderBitmapString(110,560, (void*)font2, to_char(frutas));
         renderBitmapString(80,540, (void*)font2, to_char(puntaje));
         if(!tiempo_terminado){
+            if(tiempo<=10){
+                glColor3f(1.0f, 0.0f, 0.0f);
+                renderBitmapString(700,580, (void*)font2, time_to_char(tiempo));
+            }
             renderBitmapString(700,580, (void*)font2, time_to_char(tiempo));
         }
         else
@@ -89,12 +93,12 @@ public:
         if(estado){
             glColor3f(1.0f, 0.0f, 0.0f);
             renderBitmapString(350,350,(void *)font,"Perdiste!");
-        }
-        if(tiempo_terminado){
-            glColor3f(1.0f, 0.0f, 0.0f);
-            renderBitmapString(350,350,(void *)font,"Termino!");
-        }
-
+        }else
+            if(tiempo_terminado){
+                glColor3f(1.0f, 0.0f, 0.0f);
+                renderBitmapString(350,350,(void *)font,"Termino!");
+            }
+       
 
     }
 
