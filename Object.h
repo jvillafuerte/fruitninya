@@ -1,5 +1,6 @@
 #ifdef __APPLE__
 #include <GLUT/GLUT.h>
+// #include SDL_opengl.h”
 #endif
 
 #ifdef __linux__
@@ -153,10 +154,11 @@ class Bomba:public Objeto
 {
 public:
     int radio;
-    c_musica *musica2 = new c_musica( "Sonidos/Explosion.wav");
+    c_musica * musica2;
     Bomba(){
         radio = 20;
         es_bomba = true;
+        musica2 = new c_musica( "Sonidos/Explosion.wav");
     }
     ~Bomba(){}
     void circle(float x, float y){
@@ -185,6 +187,11 @@ public:
 
 };
 
+char * sonidos[4] = {"Sonidos/cortar.wav",
+                     "Sonidos/cortar2.wav",
+                     "Sonidos/corta3.wav",
+                     "Sonidos/corta4.wav"};
+
 class Fruta:public Objeto
 {
 public:
@@ -193,8 +200,9 @@ public:
     funciones func[3];
     funciones dibuja;
     int indice;
-    c_musica *musica = new c_musica( "Sonidos/Choque.wav");
+    c_musica * musica;
     Fruta(){
+        musica = new c_musica(sonidos[rand() % 3]);
         R = 0.3 + rand() % 2;
         G = 0.3 + rand() % 2;
         B = 0.3 + rand() % 2;
