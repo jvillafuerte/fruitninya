@@ -8,9 +8,6 @@ ObjectsLauncher * launcher;
 Texto * tex;
 
 
-
-typedef char BYTE;
-
 GLint LoadGLTexture(const char *filename, int width, int height)
 {
      GLuint texture;
@@ -19,8 +16,7 @@ GLint LoadGLTexture(const char *filename, int width, int height)
      file = fopen(filename,"r");
      if (file == NULL) return 0;
  
-     data = (unsigned char*) malloc(width * height * 3);
- 
+     data = (unsigned char*) malloc(width * height * 3); 
      fread(data, width * height * 3, 1, file);
      fclose(file);
   
@@ -40,52 +36,6 @@ GLint LoadGLTexture(const char *filename, int width, int height)
     return texture;
 }
 
-GLuint LoadTextureRAW( const char * filename, int wrap )
-{
-    GLuint texture;
-    int width, height;
-    unsigned char  * data;
-    FILE * file;
-
-    // open texture data
-    file = fopen( filename, "r" );
-    if ( file == NULL ) return 0;
-
-    // allocate buffer
-    width = WIN_ANCHO;
-    height = WIN_ALTO;
-
-    data = (unsigned char*) malloc(width * height * 4);
-
-    // read texture data
-    fread( data, width * height * 4, 1, file );
-    fclose( file );
-
-    // allocate a texture name
-    glGenTextures( 1, &texture );
-
-    // select our current texture
-    glBindTexture( GL_TEXTURE_2D, texture );
-
-    // select modulate to mix texture with color for shading
-    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-/*
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
-  
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,wrap ? GL_REPEAT : GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap ? GL_REPEAT : GL_CLAMP );
-*/
-    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data );
-
-    free( data );
-
-    return texture;
-}
 
 //Manda a dibujar el recorrido del mouse y se ejecuta la funcion principal "GameHandler"
 void displayFn(){
@@ -98,10 +48,7 @@ void displayFn(){
     //glColor3f(0.5,0.5,0.5);
     mh->dibujar();
     gm->run();
-
-
-    /****/  
-    //GLuint texture = LoadTextureRAW("ola.jpg",1);
+    
     GLuint texture = LoadGLTexture("descarga3.jpg", 284,177);
 
     glEnable(GL_TEXTURE_2D);
