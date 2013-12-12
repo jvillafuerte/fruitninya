@@ -187,10 +187,10 @@ public:
 
 };
 
-char * sonidos[4] = {"Sonidos/cortar.wav",
-                     "Sonidos/cortar2.wav",
-                     "Sonidos/corta3.wav",
-                     "Sonidos/corta4.wav"};
+// char * sonidos[4] = {"Sonidos/cortar.wav",
+//                      "Sonidos/cortar2.wav",
+//                      "Sonidos/corta3.wav",
+//                      "Sonidos/corta4.wav"};
 
 class Fruta:public Objeto
 {
@@ -202,7 +202,7 @@ public:
     int indice;
     c_musica * musica;
     Fruta(){
-        musica = new c_musica(sonidos[rand() % 3]);
+        musica = new c_musica("Sonidos/cortar2.wav");
         R = 0.3 + rand() % 2;
         G = 0.3 + rand() % 2;
         B = 0.3 + rand() % 2;

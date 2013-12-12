@@ -72,6 +72,7 @@ public:   //punteros  a los demas objetos
                     if(objectslauncher->objetos[j]->es_bomba) {
                         tex->estado = true;
                         estado = true;
+                        tex->tiempo_terminado = true;
                     }
                     objectslauncher->objetos[j]->set_dibujar(false);
                     cortados.push_back(new Objeto);
@@ -92,8 +93,10 @@ public:   //punteros  a los demas objetos
                     }
 
                 }
+                combo++;
 
             }
+            combo =0;
 
         }
     }

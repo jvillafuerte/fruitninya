@@ -1,4 +1,8 @@
 #include "GameHandler.h"
+#include "glm.h"
+
+GLMmodel* pmodel = NULL;
+
 //#include "SOIL.h"
 
 //Declaro punteros a todas las estructuras
@@ -7,6 +11,7 @@ GameHandler * gm;
 ObjectsLauncher * launcher;
 Texto * tex;
 
+GLuint texture;
 
 GLint LoadGLTexture(const char *filename, int width, int height)
 {
@@ -23,10 +28,10 @@ GLint LoadGLTexture(const char *filename, int width, int height)
       
     glGenTextures(1, &texture); // allocate a texture name
     glBindTexture(GL_TEXTURE_2D, texture); // select our current texture
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);  
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);  
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_DECAL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_DECAL);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);  // when texture area is small, bilinear filter the closest mipmap
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);  // when texture area is small, bilinear filter the closest mipmap
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // when texture area is large, bilinear filter the first mipmap
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // texture should tile
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -41,16 +46,14 @@ GLint LoadGLTexture(const char *filename, int width, int height)
 void displayFn(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     GLfloat light_pos[] = { 10.0, 10.0, 10.0, 0.0 };
-    GLfloat color[] = {0.0f, 1.0f, 0.0f, 0.2f};
+    GLfloat color[] = {1.0f, 1.0f, 1.0f, 1.5f};
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, color);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
     //glColor3f(0.5,0.5,0.5);
     mh->dibujar();
     gm->run();
     
-    GLuint texture = LoadGLTexture("descarga3.jpg", 284,177);
-
     glEnable(GL_TEXTURE_2D);
     glBindTexture( GL_TEXTURE_2D, texture );
    
@@ -58,13 +61,13 @@ void displayFn(){
             glColor3f(0, 0, 1);
                 
             glTexCoord2f(0.0f, 0.0f); 
-            glVertex3f(0,0,0);
+            glVertex3f(0,0,-30);
             glTexCoord2f(1.0f, 0.0f);
-            glVertex3f(WIN_ANCHO,0,0);
+            glVertex3f(WIN_ANCHO,0,-30);
             glTexCoord2f(1.0f, 1.0f);
-            glVertex3f(WIN_ANCHO,WIN_ALTO,0);
+            glVertex3f(WIN_ANCHO,WIN_ALTO,-30);
             glTexCoord2f(0.0f, 1.0f);
-            glVertex3f(0,WIN_ALTO,0);
+            glVertex3f(0,WIN_ALTO,-30);
             
         /*
         glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.0f,  0.0f,  0.0f);
@@ -73,6 +76,17 @@ void displayFn(){
         glTexCoord2f(0.0f, 1.0f); glVertex3f( 0,  100,  0.0f);*/
     glEnd();
     glDisable(GL_TEXTURE_2D); 
+
+    if (!pmodel) {
+        pmodel = glmReadOBJ("al.obj");
+        if (!pmodel) exit(0);
+        glmUnitize(pmodel);
+        glmFacetNormals(pmodel);
+        glmVertexNormals(pmodel, 90.0);
+        glmScale(pmodel, 100);
+    }
+    
+    glmDraw(pmodel, GLM_SMOOTH | GLM_MATERIAL);
 
     glutSwapBuffers();
     // glFlush();
@@ -92,7 +106,7 @@ void MiReshapeFunc(GLsizei w, GLsizei h){
     //     perspective[2].value, perspective[3].value);
     // else if (mode == ORTHO)
     // glOrtho(-100.0, WIN_ANCHO, -100.0, WIN_ALTO, -10.0, 10.0);
-    glOrtho(0.0, WIN_ANCHO, 0.0, WIN_ALTO, -10.0, 10.0);
+    glOrtho(-300.0, WIN_ANCHO, -300.0, WIN_ALTO, -50.0, 50.0);
 
     // else if (mode == FRUSTUM)
     //     glFrustum(frustum[0].value, frustum[1].value, frustum[2].value,
@@ -149,6 +163,8 @@ int main(int argc, char *argv[]){
    glutIdleFunc(idle);
    glutMotionFunc(motion_mouseFunc);
    glutPassiveMotionFunc(passive_mouseFunc);
+  // texture = LoadGLTexture("madera.bmp", 100, 53);
+   texture = LoadGLTexture("descarga3.bmp", 480, 480);
    ////////////////
    Inicia_SDL_mixer(); 
     //Mix_AllocateChannels(2);
