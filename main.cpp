@@ -8,60 +8,34 @@ ObjectsLauncher * launcher;
 Texto * tex;
 
 
-
-typedef char BYTE;
-
-GLuint LoadTextureRAW( const char * filename, int wrap )
+GLint LoadGLTexture(const char *filename, int width, int height)
 {
-    GLuint texture;
-    int width, height;
-    char  * data;
-    FILE * file;
-
-    // open texture data
-    file = fopen( filename, "rb" );
-    if ( file == NULL ) return 0;
-
-    // allocate buffer
-    width = WIN_ANCHO;
-    height = WIN_ALTO;
-    data = (char*) malloc(width * height * 3);
-
-    // read texture data
-    fread( data, width * height * 3, 1, file );
-    fclose( file );
-
-    // allocate a texture name
-    glGenTextures( 1, &texture );
-
-    // select our current texture
-    glBindTexture( GL_TEXTURE_2D, texture );
-
-    // select modulate to mix texture with color for shading
-    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-
-    // when texture area is small, bilinear filter the closest mipmap
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                     GL_LINEAR_MIPMAP_NEAREST );
-    // when texture area is large, bilinear filter the first mipmap
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-
-    // if wrap is true, the texture wraps over at the edges (repeat)
-    //       ... false, the texture ends at the edges (clamp)
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                     wrap ? GL_REPEAT : GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
-                     wrap ? GL_REPEAT : GL_CLAMP );
-
-    // build our texture mipmaps
-    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,
-                       GL_RGB, GL_UNSIGNED_BYTE, data );
-
-    // free buffer
-    free( data );
-
+     GLuint texture;
+     unsigned char *data;
+     FILE *file;
+     file = fopen(filename,"r");
+     if (file == NULL) return 0;
+ 
+     data = (unsigned char*) malloc(width * height * 3); 
+     fread(data, width * height * 3, 1, file);
+     fclose(file);
+  
+      
+    glGenTextures(1, &texture); // allocate a texture name
+    glBindTexture(GL_TEXTURE_2D, texture); // select our current texture
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);  
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_DECAL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_DECAL);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);  // when texture area is small, bilinear filter the closest mipmap
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // when texture area is large, bilinear filter the first mipmap
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // texture should tile
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data); // build our texture mipmaps
+    free(data);  // free buffer
+ 
     return texture;
 }
+
 
 //Manda a dibujar el recorrido del mouse y se ejecuta la funcion principal "GameHandler"
 void displayFn(){
@@ -74,13 +48,15 @@ void displayFn(){
     //glColor3f(0.5,0.5,0.5);
     mh->dibujar();
     gm->run();
+    
+    GLuint texture = LoadGLTexture("descarga3.jpg", 284,177);
 
-    /***
     glEnable(GL_TEXTURE_2D);
-    GLuint texture = LoadTextureRAW("ola.bmp",0);
-    glBegin(GL_POLYGON);
+    glBindTexture( GL_TEXTURE_2D, texture );
+   
+    glBegin(GL_QUADS);
             glColor3f(0, 0, 1);
-
+                
             glTexCoord2f(0.0f, 0.0f); 
             glVertex3f(0,0,0);
             glTexCoord2f(1.0f, 0.0f);
@@ -89,9 +65,14 @@ void displayFn(){
             glVertex3f(WIN_ANCHO,WIN_ALTO,0);
             glTexCoord2f(0.0f, 1.0f);
             glVertex3f(0,WIN_ALTO,0);
+            
+        /*
+        glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.0f,  0.0f,  0.0f);
+        glTexCoord2f(1.0f, 0.0f); glVertex3f( 100, 0,  0.0f);
+        glTexCoord2f(1.0f, 1.0f); glVertex3f( 100,  100,  0.0f);
+        glTexCoord2f(0.0f, 1.0f); glVertex3f( 0,  100,  0.0f);*/
     glEnd();
     glDisable(GL_TEXTURE_2D); 
-    */
 
     glutSwapBuffers();
     // glFlush();
