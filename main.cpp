@@ -1,5 +1,5 @@
 #include "GameHandler.h"
-#include "SOIL.h"
+//#include "SOIL.h"
 
 //Declaro punteros a todas las estructuras
 MouseHandler * mh;
@@ -79,9 +79,9 @@ void displayFn(){
     glBegin(GL_POLYGON);
             glColor3f(0, 0, 1);
 
-            glTexCoord2f(0.0f, 1.0f); 
+            glTexCoord2f(0.0f, 0.0f); 
             glVertex3f(0,0,0);
-            glTexCoord2f(1.0f, 1.0f);
+            glTexCoord2f(1.0f, 0.0f);
             glVertex3f(WIN_ANCHO,0,0);
             glTexCoord2f(1.0f, 1.0f);
             glVertex3f(WIN_ANCHO,WIN_ALTO,0);
