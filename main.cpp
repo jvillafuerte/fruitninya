@@ -7,6 +7,8 @@ GameHandler * gm;
 ObjectsLauncher * launcher;
 Texto * tex;
 
+
+
 typedef char BYTE;
 
 GLuint LoadTextureRAW( const char * filename, int wrap )
@@ -73,7 +75,7 @@ void displayFn(){
     mh->dibujar();
     gm->run();
 
-    /****/
+    /***
     glEnable(GL_TEXTURE_2D);
     GLuint texture = LoadTextureRAW("ola.bmp",0);
     glBegin(GL_POLYGON);
@@ -89,6 +91,7 @@ void displayFn(){
             glVertex3f(0,WIN_ALTO,0);
     glEnd();
     glDisable(GL_TEXTURE_2D); 
+    */
 
     glutSwapBuffers();
     // glFlush();
@@ -165,6 +168,31 @@ int main(int argc, char *argv[]){
    glutIdleFunc(idle);
    glutMotionFunc(motion_mouseFunc);
    glutPassiveMotionFunc(passive_mouseFunc);
+   ////////////////
+   Inicia_SDL_mixer(); 
+    //Mix_AllocateChannels(2);
+    //choque    = new c_sonido( "Sonidos/DigitalStream.wav", 100, 128 );
+    //explosion = new c_sonido( "Sonidos/Explosion.wav", 1, 128 );
+
+    // Mix_Chunk *sound = Mix_LoadWAV("Sonidos/DigitalStream.wav");
+//Mix_PlayChannel(-1, sound, 0);
+
+    c_musica *musica = new c_musica( "Sonidos/fondo.wav");
+    ///////////////////7
+    //Llamada a las funciones de OpenGl
+
+     ///////////////////////
+    musica->reproduce();
+
+    // for (int i = 0; i < 10000; ++i)
+    // {
+    //     if(i==5000)
+    //         musica->para();
+    // }
+    //choque->reproduce();    delete choque;
+    //explosion->para(); delete explosion;
+    // musica->para();    delete musica;
+////////////////////////////
    Init();
    glutMainLoop();
    return 0;   
