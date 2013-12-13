@@ -134,7 +134,7 @@ int main(int argc, char *argv[]){
    mh = new MouseHandler();
    gm = new GameHandler();
    gm->set(mh, launcher, tex);
-   textu = new texture("descarga3.bmp", 480, 480);
+   textu = new texture("madera2.bmp", 480, 480);
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
    glutInitWindowSize(WIN_ANCHO, WIN_ALTO);
