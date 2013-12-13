@@ -13,6 +13,8 @@ Texto * tex;
 
 GLuint texture;
 
+int ANGULO = 10;
+
 GLint LoadGLTexture(const char *filename, int width, int height)
 {
      GLuint texture;
@@ -46,7 +48,7 @@ GLint LoadGLTexture(const char *filename, int width, int height)
 void displayFn(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     GLfloat light_pos[] = { 10.0, 10.0, 10.0, 0.0 };
-    GLfloat color[] = {1.0f, 1.0f, 1.0f, 1.5f};
+    GLfloat color[] = {1.0f, 1.0f, 1.0f, 0.5f};
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
@@ -68,7 +70,6 @@ void displayFn(){
             glVertex3f(WIN_ANCHO,WIN_ALTO,-30);
             glTexCoord2f(0.0f, 1.0f);
             glVertex3f(0,WIN_ALTO,-30);
-            
         /*
         glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.0f,  0.0f,  0.0f);
         glTexCoord2f(1.0f, 0.0f); glVertex3f( 100, 0,  0.0f);
@@ -77,19 +78,35 @@ void displayFn(){
     glEnd();
     glDisable(GL_TEXTURE_2D); 
 
+
+    glPushMatrix();
+
     if (!pmodel) {
-        pmodel = glmReadOBJ("al.obj");
+        pmodel = glmReadOBJ("models/apple/apples.obj");
         if (!pmodel) exit(0);
         glmUnitize(pmodel);
         glmFacetNormals(pmodel);
         glmVertexNormals(pmodel, 90.0);
-        glmScale(pmodel, 100);
+        glmScale(pmodel, 50);
     }
     
+ glRotatef( ((ANGULO / 3.14) * 180.0f),0.0,0.0,1.0); // inclinagira a los lados 
+ // glTranslatef(centro_->x_,centro_->y_, centro_->z_); 
+ // glTranslatef( -centro_->x_, -centro_->y_, -centro_->z_); 
+ glEnable(GL_TEXTURE_2D); 
+ // glmDraw(modelo_,GLM_SMOOTH | GLM_TEXTURE); 
+ glmDraw(pmodel, GLM_SMOOTH | GLM_MATERIAL); 
+ glDisable(GL_TEXTURE_2D); 
+ glLoadIdentity(); 
+ glPopMatrix();
+
+
+
     glmDraw(pmodel, GLM_SMOOTH | GLM_MATERIAL);
 
     glutSwapBuffers();
     // glFlush();
+    ANGULO+=10;
 }
 
 void MiReshapeFunc(GLsizei w, GLsizei h){
@@ -166,7 +183,11 @@ int main(int argc, char *argv[]){
   // texture = LoadGLTexture("madera.bmp", 100, 53);
    texture = LoadGLTexture("descarga3.bmp", 480, 480);
    ////////////////
-   Inicia_SDL_mixer(); 
+    #ifndef __APPLE__
+    Inicia_SDL_mixer(); 
+    c_musica *musica = new c_musica( "Sonidos/fondo.wav");
+    musica->reproduce();
+    #endif
     //Mix_AllocateChannels(2);
     //choque    = new c_sonido( "Sonidos/DigitalStream.wav", 100, 128 );
     //explosion = new c_sonido( "Sonidos/Explosion.wav", 1, 128 );
@@ -174,12 +195,10 @@ int main(int argc, char *argv[]){
     // Mix_Chunk *sound = Mix_LoadWAV("Sonidos/DigitalStream.wav");
 //Mix_PlayChannel(-1, sound, 0);
 
-    c_musica *musica = new c_musica( "Sonidos/fondo.wav");
     ///////////////////7
     //Llamada a las funciones de OpenGl
 
      ///////////////////////
-    musica->reproduce();
 
     // for (int i = 0; i < 10000; ++i)
     // {

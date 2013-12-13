@@ -1,6 +1,5 @@
 #ifdef __APPLE__
 #include <GLUT/GLUT.h>
-// #include SDL_opengl.h”
 #endif
 
 #ifdef __linux__
@@ -14,7 +13,10 @@
 #include <time.h>
 #include <vector>
 #include <iostream>
+#ifndef __APPLE__
 #include "Sonido.cpp"
+#endif
+
 
 using namespace std;
 
@@ -154,11 +156,15 @@ class Bomba:public Objeto
 {
 public:
     int radio;
+    #ifndef __APPLE__
     c_musica * musica2;
+    #endif
     Bomba(){
         radio = 20;
         es_bomba = true;
+        #ifndef __APPLE__
         musica2 = new c_musica( "Sonidos/Explosion.wav");
+        #endif
     }
     ~Bomba(){}
     void circle(float x, float y){
@@ -181,7 +187,9 @@ public:
         }
     }
     void cortar(Objeto * & a , Objeto * & b){
+        #ifndef __APPLE__
         musica2->reproduce();
+        #endif
         //musica2->para();   // delete musica2;
     }
 
@@ -200,9 +208,13 @@ public:
     funciones func[3];
     funciones dibuja;
     int indice;
+    #ifndef __APPLE__
     c_musica * musica;
+    #endif
     Fruta(){
+        #ifndef __APPLE__
         musica = new c_musica("Sonidos/cortar2.wav");
+        #endif
         R = 0.3 + rand() % 2;
         G = 0.3 + rand() % 2;
         B = 0.3 + rand() % 2;
@@ -261,10 +273,13 @@ public:
     }
 
     void cortar(Objeto * & a , Objeto * & b){
+        #ifndef __APPLE__
         musica->reproduce();
+        #endif
         a->set(centro->x, centro->y, tam/2, ang+20, 5, this->R, this->G, this->B);
         b->set(centro->x, centro->y, tam/2, ang-20, 5, this->R, this->G, this->B);
+        #ifndef __APPLE__
         musica->para();
-        
+        #endif
     }
 };

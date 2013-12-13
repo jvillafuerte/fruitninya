@@ -1,0 +1,15 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl FrontColor
+Ka 0.000000 0.000000 0.000000
+Kd 0.890196 0.882353 0.870588
+Ks 0.330000 0.330000 0.330000
+
+newmtl _Vegetation_Blur3_1
+Ka 0.000000 0.000000 0.000000
+Kd 0.372549 0.529412 0.341176
+Ks 0.330000 0.330000 0.330000
+map_Kd piña_ladoa/_Vegetation_Blur3_1.jpg
+

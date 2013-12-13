@@ -46,8 +46,11 @@
 #include <iostream>
 using namespace std;
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_mixer.h>
+#include "SDL/SDL.h"
+#include "SDL/SDL_mixer.h"
+
+
+#define SDL_USE_NIB_FILE 1
 
 void Inicia_SDL_mixer();
 
