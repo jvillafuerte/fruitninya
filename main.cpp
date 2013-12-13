@@ -1,7 +1,6 @@
 
 #include "Texture.h"
 
-
 // GLMmodel* pmodel = NULL;
 
 //#include "SOIL.h"
@@ -11,61 +10,64 @@ MouseHandler * mh;
 GameHandler * gm;
 ObjectsLauncher * launcher;
 Texto * tex;
-texture * textu;
 
 int ANGULO = 10;
+GLuint LoadGLTexture(char* filename, int width , int height)
+{
+       GLuint texture;
+       unsigned char *data;
+       FILE *file;
+       file = fopen(filename,"r");
+       if (file == NULL) return 0;
+   
+       data = (unsigned char*) malloc(width * height * 3); 
+       fread(data, width * height * 3, 1, file);
+       fclose(file);
+    
+        
+      glGenTextures(1, &texture); // allocate a texture name
+      glBindTexture(GL_TEXTURE_2D, texture); // select our current texture
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);  
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_DECAL);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_DECAL);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);  // when texture area is small, bilinear filter the closest mipmap
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // when texture area is large, bilinear filter the first mipmap
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // texture should tile
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data); // build our texture mipmaps
+      free(data);  
+   
+      return texture;
+  }
 
 //Manda a dibujar el recorrido del mouse y se ejecuta la funcion principal "GameHandler"
 void displayFn(){
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     GLfloat light_pos[] = { WIN_ANCHO/2, WIN_ALTO/2, 0.0, 1.0 };
     //GLfloat light_pos_top[] = { WIN_ANCHO/2, WIN_ALTO, 10.0, 1.0 };
     GLfloat color[] = {1.0f, 1.0f, 1.0f, 0.5f};
     //GLfloat color2[] = {1.0f, 1.0f, 1.0f, 0.5f};
-
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
     //lLightfv(GL_LIGHT1, GL_POSITION, light_pos_top);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
-
+    //textu->run();
     //glLightfv(GL_LIGHT1, GL_AMBIENT, color2);
-
-
-    
-
-    //glColor3f(0.5,0.5,0.5);
 
     mh->dibujar();
     gm->run();
-    textu->run();
-
-    // glPushMatrix();
-
-    // if (!pmodel) {
-    //     pmodel = glmReadOBJ("models/apple/apples.obj");
-    //     if (!pmodel) exit(0);
-    //     glmUnitize(pmodel);
-    //     glmFacetNormals(pmodel);
-    //     glmVertexNormals(pmodel, 90.0);
-    //     glmScale(pmodel, 50);
-    // }
+    GLuint textures = LoadGLTexture("madera2.bmp", 480, 480);
+    glEnable(GL_TEXTURE_2D);
+      glBindTexture( GL_TEXTURE_2D, textures);   
+      glBegin(GL_QUADS);                
+              glTexCoord2f(0.0f, 0.0f);  glVertex3f(0,0,-30);
+              glTexCoord2f(1.0f, 0.0f);  glVertex3f(WIN_ANCHO,0,-30);
+              glTexCoord2f(1.0f, 1.0f);  glVertex3f(WIN_ANCHO,WIN_ALTO,-30);
+              glTexCoord2f(0.0f, 1.0f);  glVertex3f(0,WIN_ALTO,-30);
+      glEnd();
+    glDisable(GL_TEXTURE_2D); 
     
-
- // glRotatef( ((ANGULO / 3.14) * 180.0f),0.0,0.0,1.0); // inclinagira a los lados 
- // // glTranslatef(centro_->x_,centro_->y_, centro_->z_); 
- // // glTranslatef( -centro_->x_, -centro_->y_, -centro_->z_); 
- // glEnable(GL_TEXTURE_2D); 
- // // glmDraw(modelo_,GLM_SMOOTH | GLM_TEXTURE); 
- // glmDraw(pmodel, GLM_SMOOTH | GLM_MATERIAL); 
- // glDisable(GL_TEXTURE_2D); 
- // glLoadIdentity(); 
- // glPopMatrix();
-
-
-
- //    glmDraw(pmodel, GLM_SMOOTH | GLM_MATERIAL);
-
     glutSwapBuffers();
-    // glFlush();
 }
 
 void MiReshapeFunc(GLsizei w, GLsizei h){
@@ -118,6 +120,7 @@ void motion_mouseFunc(int x, int y){
 
 void Init(void){
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
 }
 
 static void idle(void){
@@ -126,14 +129,13 @@ static void idle(void){
 
 int main(int argc, char *argv[]){
    srand (time(NULL));
-
     //Se inicializa a los punteros y se agregan al controlador del Juego (gamehandler)    
    tex = new Texto();
    launcher = new ObjectsLauncher();
    mh = new MouseHandler();
-   gm = new GameHandler();
-   gm->set(mh, launcher, tex);
-   textu = new texture("madera2.bmp", 480, 480);
+   gm = new GameHandler(); gm->set(mh, launcher, tex);
+   //textu = new texture("madera2.bmp", 480, 480);
+
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
    glutInitWindowSize(WIN_ANCHO, WIN_ALTO);
@@ -144,8 +146,7 @@ int main(int argc, char *argv[]){
    glutIdleFunc(idle);
    glutMotionFunc(motion_mouseFunc);
    glutPassiveMotionFunc(passive_mouseFunc);
-   //texture = LoadGLTexture("descarga3.bmp", 480, 480);
-   ////////////////
+
     #ifndef __APPLE__
     Inicia_SDL_mixer(); 
     c_musica *musica = new c_musica( "Sonidos/fondo.wav");
