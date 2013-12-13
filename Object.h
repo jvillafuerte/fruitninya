@@ -44,8 +44,22 @@ char * rutas_modelos[4] = {"models/apple/apples.obj",
                         "models/pinia/pina.obj",
                         "models/platano/platano_entero.obj"};
 
+char * rutas_mitades[8] = {
+    "models/apple/apples_ladoa.obj", "models/apple/apples_ladob.obj",
+    "models/pera/pera_ladoa.obj", "models/pera/pera_ladob.obj",
+    "models/pinia/pina_ladoa.obj", "models/pinia/pina_ladob.obj",
+    "models/platano/platano_ladoa.obj", "models/platano/platano_ladob.obj"
+};
+
 GLMmodel * modelos[4] = {manzana, pera, pinia, platano};
 
+// vector< vector<char *> > ;
+GLMmodel * modelos_mitades[8] ={
+    manzana_a, manzana_b,
+    pera_a, pera_b,
+    pinia_a, pinia_b,
+    platano_a, platano_b
+};
 
 class Punto
 {
@@ -100,8 +114,8 @@ public:
         es_bomba = false;
     }
 
-    Objeto(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_){
-        centro = new Punto(xx, yy);
+    Objeto(GLfloat xx, GLfloat yy, GLfloat zz, GLfloat tamm, GLfloat angg, GLfloat vel_){
+        centro = new Punto(xx, yy, zz);
         tam=tamm;
         ang=angg;
         vel=vel_;
@@ -110,8 +124,8 @@ public:
         dibujar_ = true;
     }
 
-    void set(GLfloat xx, GLfloat yy, GLfloat tamm, GLfloat angg, GLfloat vel_, GLfloat R=1, GLfloat G=0, GLfloat B=0){
-        centro = new Punto(xx, yy);
+    void set(GLfloat xx, GLfloat yy, GLfloat zz, GLfloat tamm, GLfloat angg, GLfloat vel_, GLfloat R=1, GLfloat G=0, GLfloat B=0){
+        centro = new Punto(xx, yy, zz);
         tam=tamm;
         ang=angg;
         vel=vel_;
@@ -159,17 +173,17 @@ public:
         // glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glPushMatrix();
-        glTranslatef(centro->x, centro->y, 0);
+        glTranslatef(centro->x, centro->y, centro->z);
         glRotated(rot, 0, 0, 1);
         glRotated(rot, 1, 0, 0);
-        glTranslatef(-centro->x, -centro->y, 0);
+        glTranslatef(-centro->x, -centro->y, -centro->z);
         dibujar();
         glPopMatrix();
     }
 
     virtual void cortar(Objeto * & a , Objeto * & b){
-        a->set(centro->x, centro->y, tam/2, ang+20, 5, this->R, this->G, this->B);
-        b->set(centro->x, centro->y, tam/2, ang-20, 5, this->R, this->G, this->B);
+        a->set(centro->x, centro->y, centro->z, tam/2, ang+20, 5, this->R, this->G, this->B);
+        b->set(centro->x, centro->y, centro->z, tam/2, ang-20, 5, this->R, this->G, this->B);
     }
     
     void set_dibujar(bool val){
@@ -242,12 +256,80 @@ public:
 //                      "Sonidos/corta4.wav"};
 
 
-// class Mitad
-// {
-// public:
-//     Mitad(){}
-//     ~Mitad(){}
-// };
+class Mitad:public Objeto
+{
+public:
+    int indice;
+    int cual_mitad;
+    int indice_real;
+    Mitad(){}
+    Mitad(int ind, int cm){
+        indice=ind;
+        cual_mitad=cm;
+        indice_real = indice*2 + cual_mitad;
+        if (!modelos_mitades[indice_real]) {
+            modelos_mitades[indice_real] = glmReadOBJ(rutas_mitades[indice_real]);
+            if (!modelos_mitades[indice_real]) exit(0);
+        }
+    }
+
+    ~Mitad(){}
+
+    void dibujar(){
+        if(dibujar_){ 
+            glPushMatrix(); 
+            glTranslatef(centro->x,centro->y, centro->z); 
+            glRotatef(rot,0.0,0.0,1.0); 
+            glRotatef(rot,0.0,1.0,0.0); 
+            glmUnitize(modelos_mitades[indice_real]);
+            glmFacetNormals(modelos_mitades[indice_real]);
+            glmScale(modelos_mitades[indice_real], 40);
+            glmDraw(modelos_mitades[indice_real], GLM_SMOOTH | GLM_MATERIAL); 
+            glTranslatef( -centro->x, -centro->y, -centro->z);
+            glLoadIdentity(); 
+            glPopMatrix();
+        }
+    }
+
+    void set(GLfloat xx, GLfloat yy, GLfloat zz, GLfloat tamm, GLfloat angg, GLfloat vel_, GLfloat R=1, GLfloat G=0, GLfloat B=0, int ind=0, int cm=0){
+        centro = new Punto(xx, yy, zz);
+        tam=tamm;
+        ang=angg;
+        vel=vel_;
+        y0 = yy;
+        x0 = xx;
+        if(ang>0){
+            vel_x= vel*cos(ang * PI / 180);
+            vel_y= vel*sin(ang * PI / 180);
+        }else
+        {
+            vel_x= -1*vel*cos(ang * PI / 180);
+            vel_y= -1*vel*sin(ang * PI / 180);
+        }
+        dibujar_ = true;
+        this->R = R;
+        this->G = G;
+        this->B = B;
+
+        indice=ind;
+        cual_mitad=cm;
+        indice_real = indice*2 + cual_mitad;
+        if (!modelos_mitades[indice_real]) {
+            modelos_mitades[indice_real] = glmReadOBJ(rutas_mitades[indice_real]);
+            if (!modelos_mitades[indice_real]) exit(0);
+        }
+    }
+
+    void rotar(){
+        dibujar();
+    }
+
+    void cortar(Mitad * & a , Mitad * & b){
+
+    }
+
+
+};
 
 class Fruta:public Objeto
 {
@@ -261,7 +343,7 @@ public:
         musica = new c_musica("Sonidos/cortar2.wav");
         #endif
         indice = rand() % 4;
-        if (!modelos[indice]) {
+        if (!modelos_mitades[indice]) {
             modelos[indice] = glmReadOBJ(rutas_modelos[indice]);
             if (!modelos[indice]) exit(0);
         }
@@ -289,12 +371,12 @@ public:
         dibujar();
     }
 
-    void cortar(Objeto * & a , Objeto * & b){
+    void cortar(Mitad * & a , Mitad * & b){
         #ifndef __APPLE__
         musica->reproduce();
         #endif
-        a->set(centro->x, centro->y, tam/2, ang+20, 5, this->R, this->G, this->B);
-        b->set(centro->x, centro->y, tam/2, ang-20, 5, this->R, this->G, this->B);
+        a->set(centro->x, centro->y, centro->z, tam/2, ang+20, 5, this->R, this->G, this->B, indice, 0);
+        b->set(centro->x, centro->y, centro->z, tam/2, ang-20, 5, this->R, this->G, this->B, indice, 1);
         #ifndef __APPLE__
         musica->para();
         #endif

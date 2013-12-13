@@ -5,7 +5,8 @@
 class ObjectsLauncher
 {
 public:
-    vector<Objeto *> objetos;
+    vector<Fruta *> frutas;
+    vector<Bomba *> bombas;
     int max_frutas;
     int max_bombas;
     bool empty;
@@ -24,44 +25,59 @@ public:
 
     void create_objects(){
         empty = false;
-        int i = 0;
-        for ( ; i < max_frutas; i++)                //Crea un numero max de frutas en el vector de objetos 
+        int z = MIN_Z;
+        for (int i=0 ; i < max_frutas; i++)                //Crea un numero max de frutas en el vector de objetos 
         {
-            objetos.push_back(new Fruta());
-            objetos[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),(rand()%20)+10,((rand()%10)+80)*objetos[i]->sentido,
+            z += 100;
+            frutas.push_back(new Fruta());
+            frutas[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),z,(rand()%20)+10,((rand()%10)+80)*frutas[i]->sentido,
                             (rand()%20)+80);
         }
-        for (; i < (max_frutas + max_bombas); i++)  //Crea un numero maximo de bombas en el vector de objetos
+        for (int i=0; i < max_bombas; i++)  //Crea un numero maximo de bombas en el vector de objetos
         {
-            objetos.push_back(new Bomba());
-            objetos[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),(rand()%20)+10,((rand()%10)+80)*objetos[i]->sentido,
+            z += 100;
+            bombas.push_back(new Bomba());
+            bombas[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),z,(rand()%20)+10,((rand()%10)+80)*bombas[i]->sentido,
                             (rand()%20)+80);
         }
     }
 
     void run(){
-        int max = max_frutas + max_bombas;
-        for (int i = 0; i < max; i++)       //Manda a ejecutar todos los datos del vector creado.
+        for (int i=0 ; i < max_frutas; i++)                //Crea un numero max de frutas en el vector de objetos 
         {
-            objetos[i]->mover();
-            objetos[i]->rotar();
+            frutas[i]->mover();
+            frutas[i]->rotar();
+        }
+        for (int i=0; i < max_bombas; i++)  //Crea un numero maximo de bombas en el vector de objetos
+        {
+            bombas[i]->mover();
+            bombas[i]->rotar();
         }
     }
 
     bool get_status(){
-        int max = max_frutas + max_bombas;
-        for (int i = 0; i < max; i++){
-            if(objetos[i]->centro->y > -ORIGEN_Y){      //verifica si el objeto esta fuera de la pantalla
+        for (int i=0 ; i < max_frutas; i++)                //Crea un numero max de frutas en el vector de objetos 
+        {
+            if(frutas[i]->centro->y > -ORIGEN_Y){      //verifica si el objeto esta fuera de la pantalla
                 empty = false;                          
                 return false;
             }
         }
+        for (int i=0; i < max_bombas; i++)  //Crea un numero maximo de bombas en el vector de objetos
+        {
+            if(frutas[i]->centro->y > -ORIGEN_Y){      //verifica si el objeto esta fuera de la pantalla
+                empty = false;                          
+                return false;
+            }
+        }
+
         empty = true;        //Si es que recorrio y todos salieron entonces el vector de objetos estara vacio.
         return empty;
     }
     
     void destroy(){
-        objetos.clear();   
+        frutas.clear();  
+        bombas.clear();
     }
 
     ~ObjectsLauncher(){}
