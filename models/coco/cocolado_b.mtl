@@ -1,0 +1,10 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl Vegetation_Bark_Cedar
+Ka 0.000000 0.000000 0.000000
+Kd 0.239216 0.133333 0.000000
+Ks 0.330000 0.330000 0.330000
+map_Kd cocolado_b/Vegetation_Bark_Cedar.jpg
+
