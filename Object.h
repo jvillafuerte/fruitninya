@@ -213,29 +213,27 @@ public:
 
     void dibujar(){
         if(dibujar_){ 
-         glPushMatrix(); 
-         glTranslatef(centro->x,centro->y, centro->z); 
-         glRotatef(rot,0.0,0.0,1.0); 
-         glRotatef(rot,0.0,1.0,0.0); 
+            glPushMatrix(); 
+            glTranslatef(centro->x,centro->y, centro->z); 
+            glRotatef(rot,0.0,0.0,1.0); 
+            glRotatef(rot,0.0,1.0,0.0); 
             glmUnitize(bomba);
             glmFacetNormals(bomba);
             glmScale(bomba, 40);
             glmDraw(bomba, GLM_SMOOTH | GLM_MATERIAL); 
-         glTranslatef( -centro->x, -centro->y, -centro->z);
-        glLoadIdentity(); 
-        glPopMatrix();
+            glTranslatef( -centro->x, -centro->y, -centro->z);
+            glLoadIdentity(); 
+            glPopMatrix();
+        }
     }
-}
-void rotar(){
-    dibujar();
-}
-void cortar(Objeto * & a , Objeto * & b){
+    void rotar(){
+        dibujar();
+    }
+    void cortar(Objeto * & a , Objeto * & b){
         #ifndef __APPLE__
-    musica2->reproduce();
+        musica2->reproduce();
         #endif
-        //musica2->para();   // delete musica2;
-}
-
+    }
 };
 
 // char * sonidos[4] = {"Sonidos/cortar.wav",
@@ -243,13 +241,17 @@ void cortar(Objeto * & a , Objeto * & b){
 //                      "Sonidos/corta3.wav",
 //                      "Sonidos/corta4.wav"};
 
+
+// class Mitad
+// {
+// public:
+//     Mitad(){}
+//     ~Mitad(){}
+// };
+
 class Fruta:public Objeto
 {
 public:
-    GLfloat R, G, B;
-    typedef void (Fruta::*funciones)();
-    funciones func[4];
-    funciones dibuja;
     int indice;
     #ifndef __APPLE__
     c_musica * musica;
@@ -258,79 +260,29 @@ public:
         #ifndef __APPLE__
         musica = new c_musica("Sonidos/cortar2.wav");
         #endif
-        R = 0.3 + rand() % 2;
-        G = 0.3 + rand() % 2;
-        B = 0.3 + rand() % 2;
-        func[0] = &Fruta::cuadrado;
-        func[1] = &Fruta::rectangulo;
-        func[2] = &Fruta::triangulo;
-        indice = rand() % 3;
-        // dibuja = (this->func[indice]);
-        dibuja = (this->func[0]);
+        indice = rand() % 4;
         if (!modelos[indice]) {
             modelos[indice] = glmReadOBJ(rutas_modelos[indice]);
             if (!modelos[indice]) exit(0);
         }
-
     }
     ~Fruta(){}
 
-    //funcion que dibuja un cuadrado
-    void cuadrado(){
-
-        // if(dibujar_){
-
-        //     glBegin(GL_QUADS);
-        //     glColor3f(R, G, B);
-        //     glVertex3f(centro->x-tam, centro->y-tam, centro->z);
-        //     glVertex3f(centro->x+tam, centro->y-tam, centro->z);
-        //     glVertex3f(centro->x+tam, centro->y+tam, centro->z);
-        //     glVertex3f(centro->x-tam, centro->y+tam, centro->z);
-        //     glEnd();
-        // }
+    //ejecuta alguna de las funciones de arriba segun fue asignado aleatoriamente en el constructor
+    void dibujar(){
         if(dibujar_){ 
-         glPushMatrix(); 
-         glTranslatef(centro->x,centro->y, centro->z); 
-         glRotatef(rot,0.0,0.0,1.0); 
-         glRotatef(rot,0.0,1.0,0.0); 
+            glPushMatrix(); 
+            glTranslatef(centro->x,centro->y, centro->z); 
+            glRotatef(rot,0.0,0.0,1.0); 
+            glRotatef(rot,0.0,1.0,0.0); 
             glmUnitize(modelos[indice]);
             glmFacetNormals(modelos[indice]);
             glmScale(modelos[indice], 40);
             glmDraw(modelos[indice], GLM_SMOOTH | GLM_MATERIAL); 
-         glTranslatef( -centro->x, -centro->y, -centro->z);
-        glLoadIdentity(); 
-        glPopMatrix();
-    }
-    }
-
-    //funcion que dibuja un rectangulo
-    void rectangulo(){
-        if(dibujar_){
-            glBegin(GL_QUADS);
-            glColor3f(R, G, B);
-            glVertex3f(centro->x-tam, centro->y-tam, 0);
-            glVertex3f(centro->x+2*tam, centro->y-tam, 0);
-            glVertex3f(centro->x+2*tam, centro->y+tam, 0);
-            glVertex3f(centro->x-tam, centro->y+tam, 0);
-            glEnd();
+            glTranslatef( -centro->x, -centro->y, -centro->z);
+            glLoadIdentity(); 
+            glPopMatrix();
         }
-    }
-
-    //funcion que dibuja un triangulo
-    void triangulo(){
-        if(dibujar_){
-            glBegin(GL_TRIANGLES);
-            glColor3f(R, G, B);
-            glVertex3f(centro->x-tam, centro->y-tam, 0);
-            glVertex3f(centro->x+2*tam, centro->y-tam, 0);
-            glVertex3f(centro->x+2*tam, centro->y+tam, 0);
-            glEnd();
-        }
-    }
-
-    //ejecuta alguna de las funciones de arriba segun fue asignado aleatoriamente en el constructor
-    void dibujar(){
-        (this->*dibuja)();
     }
 
     void rotar(){
