@@ -1,4 +1,4 @@
-#include "Texture.h"
+#include "GameHandler.h"
 
 //Declaro punteros a todas las estructuras
 MouseHandler * mh;
