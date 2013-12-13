@@ -46,7 +46,7 @@ char * rutas_modelos[4] = {"models/apple/apples.obj",
 
 char * rutas_mitades[8] = {
     "models/apple/apples_ladoa.obj", "models/apple/apples_ladob.obj",
-    "models/pera/pera_ladoa.obj", "models/pera/pera_ladob.obj",
+    "models/pera/perlado_a.obj", "models/pera/perlado_b.obj",
     "models/melon/melonlado_a.obj", "models/melon/melonlado_b.obj",
     "models/coco/cocolado_a.obj", "models/coco/cocolado_b.obj"
 };
