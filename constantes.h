@@ -8,3 +8,5 @@
 #define BOMBA_SONIDO "Sonidos/Explosion.wav"
 #define FRUTA_SONIDO "Sonidos/Choque.wav"
 #define MUSICA_FONDO "Sonidos/fondo.wav"
+#define MIN_Z -500
+#define MAX_Z 500

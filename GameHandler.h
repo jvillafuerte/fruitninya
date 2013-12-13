@@ -7,11 +7,11 @@
 class GameHandler
 {
 public:   //punteros  a los demas objetos
-    MouseHandler * mousehandler;
-    ObjectsLauncher * objectslauncher;
-    Texto * tex;
-    vector<Objeto *> cortados;
-    int nivel, frutas;
+MouseHandler * mousehandler;
+ObjectsLauncher * objectslauncher;
+Texto * tex;
+vector<Mitad *> cortados;
+int nivel, frutas;
     bool estado;          //el estado del juego si a terminado (en funcion a bomba)
 
     GameHandler(){
@@ -64,23 +64,18 @@ public:   //punteros  a los demas objetos
     void detectar_corte(){
         int combo=0;
         if(mousehandler->puntos.size()){
-            for (int j = 0; j < objectslauncher->objetos.size(); j++)
+            for (int j = 0; j < objectslauncher->frutas.size(); j++)
             {
                 if(distancia(mousehandler->puntos[mousehandler->puntos.size()-1], 
-                   objectslauncher->objetos[j]->centro) <= objectslauncher->objetos[j]->tam)
+                   objectslauncher->frutas[j]->centro) <= objectslauncher->frutas[j]->tam)
                 {
-                    if(objectslauncher->objetos[j]->es_bomba) {
-                        tex->estado = true;
-                        estado = true;
-                        tex->tiempo_terminado = true;
-                    }
-                    objectslauncher->objetos[j]->set_dibujar(false);
-                    cortados.push_back(new Objeto);
-                    cortados.push_back(new Objeto);
+                    objectslauncher->frutas[j]->set_dibujar(false);
+                    cortados.push_back(new Mitad);
+                    cortados.push_back(new Mitad);
                     int max = cortados.size();
                     combo++;
-                    objectslauncher->objetos[j]->cortar(cortados[max-1], cortados[max-2]);
-                    objectslauncher->objetos.erase(objectslauncher->objetos.begin() + j);
+                    objectslauncher->frutas[j]->cortar(cortados[max-1], cortados[max-2]);
+                    objectslauncher->frutas.erase(objectslauncher->frutas.begin() + j);
                     frutas++;
                     tex->puntaje++;
                     if (combo==3)
@@ -97,7 +92,16 @@ public:   //punteros  a los demas objetos
 
             }
             combo =0;
-
+            for (int j = 0; j < objectslauncher->bombas.size(); j++)
+            {
+                if(distancia(mousehandler->puntos[mousehandler->puntos.size()-1], 
+                   objectslauncher->bombas[j]->centro) <= objectslauncher->bombas[j]->tam)
+                {
+                    tex->estado = true;
+                    estado = true;
+                    tex->tiempo_terminado = true;
+                }
+            }
         }
     }
 

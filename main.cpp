@@ -122,7 +122,7 @@ void MiReshapeFunc(GLsizei w, GLsizei h){
     //     perspective[2].value, perspective[3].value);
     // else if (mode == ORTHO)
     // glOrtho(-100.0, WIN_ANCHO, -100.0, WIN_ALTO, -10.0, 10.0);
-    glOrtho(0, WIN_ANCHO, 0, WIN_ALTO, -500.0, 500.0);
+    glOrtho(0, WIN_ANCHO, 0, WIN_ALTO, MIN_Z, MAX_Z);
 
     // else if (mode == FRUSTUM)
     //     glFrustum(frustum[0].value, frustum[1].value, frustum[2].value,
