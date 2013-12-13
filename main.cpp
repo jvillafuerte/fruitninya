@@ -17,17 +17,17 @@ int ANGULO = 10;
 
 GLint LoadGLTexture(const char *filename, int width, int height)
 {
-     GLuint texture;
-     unsigned char *data;
-     FILE *file;
-     file = fopen(filename,"r");
-     if (file == NULL) return 0;
+ GLuint texture;
+ unsigned char *data;
+ FILE *file;
+ file = fopen(filename,"r");
+ if (file == NULL) return 0;
  
-     data = (unsigned char*) malloc(width * height * 3);
-     fread(data, width * height * 3, 1, file);
-     fclose(file);
-  
-      
+ data = (unsigned char*) malloc(width * height * 3);
+ fread(data, width * height * 3, 1, file);
+ fclose(file);
+
+
     glGenTextures(1, &texture); // allocate a texture name
     glBindTexture(GL_TEXTURE_2D, texture); // select our current texture
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
@@ -39,16 +39,18 @@ GLint LoadGLTexture(const char *filename, int width, int height)
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data); // build our texture mipmaps
     free(data); // free buffer
- 
+
     return texture;
-}
+  }
 
 
 
 //Manda a dibujar el recorrido del mouse y se ejecuta la funcion principal "GameHandler"
-void displayFn(){
-    
+  void displayFn(){
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // GLfloat ambient[] = {0.8, 0.8, 0.8, 1.0};
+    // glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
     // GLfloat light_pos[] = { WIN_ANCHO/2, WIN_ALTO/2, 0.0, 1.0 };
     // //GLfloat light_pos_top[] = { WIN_ANCHO/2, WIN_ALTO, 10.0, 1.0 };
     // GLfloat color[] = {1.0f, 1.0f, 1.0f, 0.5f};
@@ -65,60 +67,68 @@ void displayFn(){
     
     glEnable(GL_TEXTURE_2D);
     glBindTexture( GL_TEXTURE_2D, texture );
-   
+
     glBegin(GL_QUADS);
-            glColor3f(0, 0, 1);
-                
-            glTexCoord2f(0.0f, 0.0f);
-            glVertex3f(0,0,MIN_Z+20);
-            glTexCoord2f(1.0f, 0.0f);
-            glVertex3f(WIN_ANCHO,0,MIN_Z+20);
-            glTexCoord2f(1.0f, 1.0f);
-            glVertex3f(WIN_ANCHO,WIN_ALTO,MIN_Z+20);
-            glTexCoord2f(0.0f, 1.0f);
-            glVertex3f(0,WIN_ALTO,MIN_Z+20);
+    glColor3f(0, 0, 1);
+
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(0,0,MIN_Z+20);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(WIN_ANCHO,0,MIN_Z+20);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(WIN_ANCHO,WIN_ALTO,MIN_Z+20);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(0,WIN_ALTO,MIN_Z+20);
         /*
 glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.0f, 0.0f, 0.0f);
 glTexCoord2f(1.0f, 0.0f); glVertex3f( 100, 0, 0.0f);
 glTexCoord2f(1.0f, 1.0f); glVertex3f( 100, 100, 0.0f);
 glTexCoord2f(0.0f, 1.0f); glVertex3f( 0, 100, 0.0f);*/
-    glEnd();
-    glDisable(GL_TEXTURE_2D); 
-    
-    glutSwapBuffers();
+glEnd();
+glDisable(GL_TEXTURE_2D); 
+
+glutSwapBuffers();
 }
 
 void MiReshapeFunc(GLsizei w, GLsizei h){
-    if(h == 0) h = 1;
-    glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-    // glLoadIdentity();
-    // gluOrtho2D (0, WIN_ANCHO, 0, WIN_ALTO);
+  if(h == 0) h = 1;
+  glViewport(0, 0, w, h);
+  glMatrixMode(GL_PROJECTION);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    // if (mode == PERSPECTIVE)
-    //     gluPerspective(perspective[0].value, perspective[1].value, 
-    //     perspective[2].value, perspective[3].value);
-    // else if (mode == ORTHO)
-    // glOrtho(-100.0, WIN_ANCHO, -100.0, WIN_ALTO, -10.0, 10.0);
-    glOrtho(0, WIN_ANCHO, 0, WIN_ALTO, MIN_Z, MAX_Z);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glOrtho(0, WIN_ANCHO, 0, WIN_ALTO, MIN_Z, MAX_Z);
+
+  GLfloat ambientLight[] = { 0.9f, 0.9f, 0.9f, 1.0f };
+  GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
+  GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+  GLfloat position[] = {WIN_ANCHO/2, WIN_ALTO/2, 600.0f, 1.0f };
+
+// Assign created components to GL_LIGHT0
+  glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
+  glLightfv(GL_LIGHT0, GL_POSITION, position);
+
 
 
     // else if (mode == FRUSTUM)
     //     glFrustum(frustum[0].value, frustum[1].value, frustum[2].value,
     //     frustum[3].value, frustum[4].value, frustum[5].value);
     // glGetDoublev(GL_PROJECTION_MATRIX, projection);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(0.0, 0.0, 4.0,
-              0.0, 0.0, 0.0,
-              0.0, 1.0, 0.0);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(0.0, 0.0, 4.0,
+            0.0, 0.0, 0.0,
+            0.0, 1.0, 0.0);
     // glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
     // glClearColor(0.2, 0.2, 0.2, 0.0);
-    glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_LIGHTING);
-    // glEnable(GL_LIGHT0);
+  glEnable(GL_DEPTH_TEST);
+  // glEnable(COLOR_MATERIAL);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  glEnable(GL_NORMALIZE);
+  glShadeModel(GL_SMOOTH);
     //glEnable(GL_LIGHT1);
 
 
@@ -126,50 +136,50 @@ void MiReshapeFunc(GLsizei w, GLsizei h){
 
 //Cuando se mueve el mouse sin hacer click
 void passive_mouseFunc(int x, int y){
-    mh->setDrawer(false);
+  mh->setDrawer(false);
 }
 
 //Cuando se mueve el mouse en la pantalla con el click presionado
 void motion_mouseFunc(int x, int y){
-    mh->addClick(x, y);
-    mh->setDrawer(true);
+  mh->addClick(x, y);
+  mh->setDrawer(true);
 }
 
 void Init(void){
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 }
 
 static void idle(void){
-    glutPostRedisplay();
+  glutPostRedisplay();
 }
 
 int main(int argc, char *argv[]){
-   srand (time(NULL));
+ srand (time(NULL));
     //Se inicializa a los punteros y se agregan al controlador del Juego (gamehandler)    
-   tex = new Texto();
-   launcher = new ObjectsLauncher();
-   mh = new MouseHandler();
-   gm = new GameHandler(); gm->set(mh, launcher, tex);
+ tex = new Texto();
+ launcher = new ObjectsLauncher();
+ mh = new MouseHandler();
+ gm = new GameHandler(); gm->set(mh, launcher, tex);
    //textu = new texture("madera2.bmp", 480, 480);
-   
+
  
-  
-   glutInit(&argc, argv);
-   glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-   glutInitWindowSize(WIN_ANCHO, WIN_ALTO);
-   glutInitWindowPosition(0,0);
-   glutCreateWindow("Fruit Ninja");
-   glutDisplayFunc(displayFn);   
-   glutReshapeFunc(MiReshapeFunc);
-   glutIdleFunc(idle);
-   glutMotionFunc(motion_mouseFunc);
-   glutPassiveMotionFunc(passive_mouseFunc);
-   texture = LoadGLTexture("madera2.bmp", 480, 480);
+
+ glutInit(&argc, argv);
+ glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+ glutInitWindowSize(WIN_ANCHO, WIN_ALTO);
+ glutInitWindowPosition(0,0);
+ glutCreateWindow("Fruit Ninja");
+ glutDisplayFunc(displayFn);   
+ glutReshapeFunc(MiReshapeFunc);
+ glutIdleFunc(idle);
+ glutMotionFunc(motion_mouseFunc);
+ glutPassiveMotionFunc(passive_mouseFunc);
+ texture = LoadGLTexture("madera2.bmp", 480, 480);
     #ifndef __APPLE__
-    Inicia_SDL_mixer(); 
-    c_musica *musica = new c_musica( "Sonidos/fondo.wav");
-    musica->reproduce();
+ Inicia_SDL_mixer(); 
+ c_musica *musica = new c_musica( "Sonidos/fondo.wav");
+ musica->reproduce();
     #endif
     //Mix_AllocateChannels(2);
     //choque    = new c_sonido( "Sonidos/DigitalStream.wav", 100, 128 );
@@ -192,7 +202,7 @@ int main(int argc, char *argv[]){
     //explosion->para(); delete explosion;
     // musica->para();    delete musica;
 ////////////////////////////
-   Init();
-   glutMainLoop();
-   return 0;   
+ Init();
+ glutMainLoop();
+ return 0;   
 }

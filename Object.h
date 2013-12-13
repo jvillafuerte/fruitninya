@@ -335,7 +335,7 @@ public:
             // glRotatef(rot,0.0,1.0,0.0); 
             // glTranslatef( -centro->x, -centro->y, -centro->z);
             glLoadIdentity(); 
-            glPopMatrix();
+            // glPopMatrix();
         }
     }
 
