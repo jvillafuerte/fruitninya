@@ -101,6 +101,10 @@ public:
         // glLightfv(GL_LIGHT6, GL_DIFFUSE, color);
         // glLightfv(GL_LIGHT7, GL_DIFFUSE, color);
 
+        // glDisable(GL_DEPTH_TEST);
+        glDisable(GL_LIGHTING);
+        // glDisable(GL_LIGHT0);
+
         glColor3f(1.0f, 1.0f, 1.0f);
         renderBitmapString(350,580,(void *)font,"Fruit Ninja");
         renderBitmapString(10,560, (void*)font2, "Frutas Cortadas: "); 
@@ -128,7 +132,7 @@ public:
                 renderBitmapString(350,350,(void *)font,"Termino!");
             }
         // glEnable(GL_DEPTH_TEST);
-        // glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHTING);
         // glEnable(GL_LIGHT1);
         // glEnable(GL_LIGHT2);
         // glEnable(GL_LIGHT3);
