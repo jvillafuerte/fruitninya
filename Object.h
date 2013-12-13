@@ -13,6 +13,8 @@
 #include <time.h>
 #include <vector>
 #include <iostream>
+#include "glm.h"
+
 #ifndef __APPLE__
 #include "Sonido.cpp"
 #endif
@@ -21,6 +23,29 @@
 using namespace std;
 
 int s[2] = {-1, 1};
+
+// Punteros a los modelos
+GLMmodel * bomba;
+GLMmodel * manzana;
+GLMmodel * manzana_a;
+GLMmodel * manzana_b;
+GLMmodel * pera;
+GLMmodel * pera_a;
+GLMmodel * pera_b;
+GLMmodel * pinia;
+GLMmodel * pinia_a;
+GLMmodel * pinia_b;
+GLMmodel * platano;
+GLMmodel * platano_a;
+GLMmodel * platano_b;
+
+char * rutas_modelos[4] = {"models/apple/apples.obj",
+                        "models/pera/pera.obj",
+                        "models/pinia/pina.obj",
+                        "models/platano/platano_entero.obj"};
+
+GLMmodel * modelos[4] = {manzana, pera, pinia, platano};
+
 
 class Punto
 {
@@ -125,7 +150,7 @@ public:
 
     virtual void mover(){
         rot += 0.1 * sentido;
-        tiempo+=0.01;
+        tiempo+=0.05;
         centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
         centro->x = x0  + vel_x * tiempo;
     }
@@ -152,10 +177,12 @@ public:
     }
 };
 
+
 class Bomba:public Objeto
 {
 public:
     int radio;
+
     #ifndef __APPLE__
     c_musica * musica2;
     #endif
@@ -165,6 +192,11 @@ public:
         #ifndef __APPLE__
         musica2 = new c_musica( "Sonidos/Explosion.wav");
         #endif
+        if (!bomba) {
+            bomba = glmReadOBJ("models/bomba/bomb.obj");
+            if (!bomba) exit(0);
+        }
+
     }
     ~Bomba(){}
     void circle(float x, float y){
@@ -179,20 +211,29 @@ public:
         glEnd();
     } 
 
-    void dibujar(){ 
+    void dibujar(){
         if(dibujar_){ 
-            glColor3f(1.0,1.0,1.0);
-            circle(centro->x,centro->y);
-            glEnd();
+            glPushMatrix(); 
+            glTranslatef(centro->x,centro->y, centro->z); 
+            glRotatef(rot,0.0,0.0,1.0); 
+            glRotatef(rot,0.0,1.0,0.0); 
+            glmUnitize(bomba);
+            glmFacetNormals(bomba);
+            glmScale(bomba, 40);
+            glmDraw(bomba, GLM_SMOOTH | GLM_MATERIAL); 
+            glTranslatef( -centro->x, -centro->y, -centro->z);
+            glLoadIdentity(); 
+            glPopMatrix();
         }
+    }
+    void rotar(){
+        dibujar();
     }
     void cortar(Objeto * & a , Objeto * & b){
         #ifndef __APPLE__
         musica2->reproduce();
         #endif
-        //musica2->para();   // delete musica2;
     }
-
 };
 
 // char * sonidos[4] = {"Sonidos/cortar.wav",
@@ -200,13 +241,17 @@ public:
 //                      "Sonidos/corta3.wav",
 //                      "Sonidos/corta4.wav"};
 
+
+// class Mitad
+// {
+// public:
+//     Mitad(){}
+//     ~Mitad(){}
+// };
+
 class Fruta:public Objeto
 {
 public:
-    GLfloat R, G, B;
-    typedef void (Fruta::*funciones)();
-    funciones func[3];
-    funciones dibuja;
     int indice;
     #ifndef __APPLE__
     c_musica * musica;
@@ -215,61 +260,33 @@ public:
         #ifndef __APPLE__
         musica = new c_musica("Sonidos/cortar2.wav");
         #endif
-        R = 0.3 + rand() % 2;
-        G = 0.3 + rand() % 2;
-        B = 0.3 + rand() % 2;
-        func[0] = &Fruta::cuadrado;
-        func[1] = &Fruta::rectangulo;
-        func[2] = &Fruta::triangulo;
-        indice = rand() % 3;
-        dibuja = (this->func[indice]);
+        indice = rand() % 4;
+        if (!modelos[indice]) {
+            modelos[indice] = glmReadOBJ(rutas_modelos[indice]);
+            if (!modelos[indice]) exit(0);
+        }
     }
     ~Fruta(){}
 
-    //funcion que dibuja un cuadrado
-    void cuadrado(){
-        static int l = 0;
-        if(dibujar_){
-
-            glBegin(GL_QUADS);
-            glColor3f(R, G, B);
-            glVertex3f(centro->x-tam, centro->y-tam, centro->z);
-            glVertex3f(centro->x+tam, centro->y-tam, centro->z);
-            glVertex3f(centro->x+tam, centro->y+tam, centro->z);
-            glVertex3f(centro->x-tam, centro->y+tam, centro->z);
-            glEnd();
-        }
-        l++;
-    }
-
-    //funcion que dibuja un rectangulo
-    void rectangulo(){
-        if(dibujar_){
-            glBegin(GL_QUADS);
-            glColor3f(R, G, B);
-            glVertex3f(centro->x-tam, centro->y-tam, 0);
-            glVertex3f(centro->x+2*tam, centro->y-tam, 0);
-            glVertex3f(centro->x+2*tam, centro->y+tam, 0);
-            glVertex3f(centro->x-tam, centro->y+tam, 0);
-            glEnd();
-        }
-    }
-
-    //funcion que dibuja un triangulo
-    void triangulo(){
-        if(dibujar_){
-            glBegin(GL_TRIANGLES);
-            glColor3f(R, G, B);
-            glVertex3f(centro->x-tam, centro->y-tam, 0);
-            glVertex3f(centro->x+2*tam, centro->y-tam, 0);
-            glVertex3f(centro->x+2*tam, centro->y+tam, 0);
-            glEnd();
-        }
-    }
-
     //ejecuta alguna de las funciones de arriba segun fue asignado aleatoriamente en el constructor
     void dibujar(){
-        (this->*dibuja)();
+        if(dibujar_){ 
+            glPushMatrix(); 
+            glTranslatef(centro->x,centro->y, centro->z); 
+            glRotatef(rot,0.0,0.0,1.0); 
+            glRotatef(rot,0.0,1.0,0.0); 
+            glmUnitize(modelos[indice]);
+            glmFacetNormals(modelos[indice]);
+            glmScale(modelos[indice], 40);
+            glmDraw(modelos[indice], GLM_SMOOTH | GLM_MATERIAL); 
+            glTranslatef( -centro->x, -centro->y, -centro->z);
+            glLoadIdentity(); 
+            glPopMatrix();
+        }
+    }
+
+    void rotar(){
+        dibujar();
     }
 
     void cortar(Objeto * & a , Objeto * & b){

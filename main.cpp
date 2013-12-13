@@ -1,7 +1,8 @@
+
 #include "Texture.h"
 
 
-GLMmodel* pmodel = NULL;
+// GLMmodel* pmodel = NULL;
 
 //#include "SOIL.h"
 
@@ -17,44 +18,49 @@ int ANGULO = 10;
 //Manda a dibujar el recorrido del mouse y se ejecuta la funcion principal "GameHandler"
 void displayFn(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    GLfloat light_pos[] = { 10.0, 10.0, 10.0, 0.0 };
+    GLfloat light_pos[] = { WIN_ANCHO/2, WIN_ALTO/2, 10.0, 1.0 };
+    GLfloat light_pos_top[] = { WIN_ANCHO/2, WIN_ALTO, 10.0, 1.0 };
     GLfloat color[] = {1.0f, 1.0f, 1.0f, 0.5f};
+    GLfloat color2[] = {1.0f, 1.0f, 1.0f, 0.5f};
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
+
     
+    //glColor3f(0.5,0.5,0.5);
+
     mh->dibujar();
     gm->run();
     textu->run();
 
-    glPushMatrix();
+    // glPushMatrix();
 
-    if (!pmodel) {
-        pmodel = glmReadOBJ("models/apple/apples.obj");
-        if (!pmodel) exit(0);
-        glmUnitize(pmodel);
-        glmFacetNormals(pmodel);
-        glmVertexNormals(pmodel, 90.0);
-        glmScale(pmodel, 50);
-    }
+    // if (!pmodel) {
+    //     pmodel = glmReadOBJ("models/apple/apples.obj");
+    //     if (!pmodel) exit(0);
+    //     glmUnitize(pmodel);
+    //     glmFacetNormals(pmodel);
+    //     glmVertexNormals(pmodel, 90.0);
+    //     glmScale(pmodel, 50);
+    // }
     
- glRotatef( ((ANGULO / 3.14) * 180.0f),0.0,0.0,1.0); // inclinagira a los lados 
- // glTranslatef(centro_->x_,centro_->y_, centro_->z_); 
- // glTranslatef( -centro_->x_, -centro_->y_, -centro_->z_); 
- glEnable(GL_TEXTURE_2D); 
- // glmDraw(modelo_,GLM_SMOOTH | GLM_TEXTURE); 
- glmDraw(pmodel, GLM_SMOOTH | GLM_MATERIAL); 
- glDisable(GL_TEXTURE_2D); 
- glLoadIdentity(); 
- glPopMatrix();
+
+ // glRotatef( ((ANGULO / 3.14) * 180.0f),0.0,0.0,1.0); // inclinagira a los lados 
+ // // glTranslatef(centro_->x_,centro_->y_, centro_->z_); 
+ // // glTranslatef( -centro_->x_, -centro_->y_, -centro_->z_); 
+ // glEnable(GL_TEXTURE_2D); 
+ // // glmDraw(modelo_,GLM_SMOOTH | GLM_TEXTURE); 
+ // glmDraw(pmodel, GLM_SMOOTH | GLM_MATERIAL); 
+ // glDisable(GL_TEXTURE_2D); 
+ // glLoadIdentity(); 
+ // glPopMatrix();
 
 
 
-    glmDraw(pmodel, GLM_SMOOTH | GLM_MATERIAL);
+ //    glmDraw(pmodel, GLM_SMOOTH | GLM_MATERIAL);
 
     glutSwapBuffers();
     // glFlush();
-    ANGULO+=10;
 }
 
 void MiReshapeFunc(GLsizei w, GLsizei h){
@@ -71,7 +77,9 @@ void MiReshapeFunc(GLsizei w, GLsizei h){
     //     perspective[2].value, perspective[3].value);
     // else if (mode == ORTHO)
     // glOrtho(-100.0, WIN_ANCHO, -100.0, WIN_ALTO, -10.0, 10.0);
-    glOrtho(0.0, WIN_ANCHO, 0.0, WIN_ALTO, -50.0, 50.0);
+
+    glOrtho(0, WIN_ANCHO, 0, WIN_ALTO, -500.0, 500.0);
+
 
     // else if (mode == FRUSTUM)
     //     glFrustum(frustum[0].value, frustum[1].value, frustum[2].value,
@@ -87,6 +95,8 @@ void MiReshapeFunc(GLsizei w, GLsizei h){
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+
 
 }
 
@@ -99,6 +109,7 @@ void passive_mouseFunc(int x, int y){
 void motion_mouseFunc(int x, int y){
     mh->addClick(x, y);
     mh->setDrawer(true);
+    ANGULO+=10;
 }
 
 void Init(void){
