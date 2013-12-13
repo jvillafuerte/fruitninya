@@ -271,6 +271,15 @@ public:
             modelos_mitades[indice_real] = glmReadOBJ(rutas_mitades[indice_real]);
             if (!modelos_mitades[indice_real]) exit(0);
         }
+        // if(cm==0){
+        //     glPushMatrix(); 
+        //     glTranslatef(centro->x,30+centro->y, centro->z); 
+        //     glRotatef(30,0.0,0.0,1.0); 
+        //     // glRotatef(rot,0.0,1.0,0.0); 
+        //     // glTranslatef( -centro->x, -centro->y, -centro->z);
+        //     // glLoadIdentity(); 
+        //     // glPopMatrix();
+        // }
     }
 
     ~Mitad(){}
@@ -317,6 +326,16 @@ public:
         if (!modelos_mitades[indice_real]) {
             modelos_mitades[indice_real] = glmReadOBJ(rutas_mitades[indice_real]);
             if (!modelos_mitades[indice_real]) exit(0);
+        }
+        if(cm==0){
+            // ang=-ang;
+            glPushMatrix(); 
+            glTranslatef(centro->x,100+centro->y, centro->z); 
+            glRotated(130,1,0,0); 
+            // glRotatef(rot,0.0,1.0,0.0); 
+            // glTranslatef( -centro->x, -centro->y, -centro->z);
+            glLoadIdentity(); 
+            glPopMatrix();
         }
     }
 
@@ -375,8 +394,8 @@ public:
         #ifndef __APPLE__
         musica->reproduce();
         #endif
-        a->set(centro->x, centro->y, centro->z, tam/2, ang+20, 5, this->R, this->G, this->B, indice, 0);
-        b->set(centro->x, centro->y, centro->z, tam/2, ang-20, 5, this->R, this->G, this->B, indice, 1);
+        a->set(centro->x, centro->y, centro->z, tam/2, ang+150, 10, this->R, this->G, this->B, indice, 0);
+        b->set(centro->x, centro->y, centro->z, tam/2, ang-150, 10, this->R, this->G, this->B, indice, 1);
         #ifndef __APPLE__
         musica->para();
         #endif
