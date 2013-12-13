@@ -30,14 +30,14 @@ public:
         {
             z += 100;
             frutas.push_back(new Fruta());
-            frutas[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),z,(rand()%20)+10,((rand()%10)+80)*frutas[i]->sentido,
+            frutas[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),z,40,((rand()%10)+80)*frutas[i]->sentido,
                             (rand()%20)+80);
         }
         for (int i=0; i < max_bombas; i++)  //Crea un numero maximo de bombas en el vector de objetos
         {
             z += 100;
             bombas.push_back(new Bomba());
-            bombas[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),z,(rand()%20)+10,((rand()%10)+80)*bombas[i]->sentido,
+            bombas[i]->set((rand()%400)+200,1 - (rand() % ORIGEN_Y),z,30,((rand()%10)+80)*bombas[i]->sentido,
                             (rand()%20)+80);
         }
     }
@@ -56,6 +56,8 @@ public:
     }
 
     bool get_status(){
+        empty = true;        //Si es que recorrio y todos salieron entonces el vector de objetos estara vacio.
+
         for (int i=0 ; i < max_frutas; i++)                //Crea un numero max de frutas en el vector de objetos 
         {
             if(frutas[i]->centro->y > -ORIGEN_Y){      //verifica si el objeto esta fuera de la pantalla
@@ -71,7 +73,6 @@ public:
             }
         }
 
-        empty = true;        //Si es que recorrio y todos salieron entonces el vector de objetos estara vacio.
         return empty;
     }
     

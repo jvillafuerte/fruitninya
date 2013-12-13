@@ -204,7 +204,7 @@ public:
         radio = 20;
         es_bomba = true;
         #ifndef __APPLE__
-        musica2 = new c_musica( "Sonidos/Explosion.wav");
+        musica2 = new c_musica("Sonidos/Explosion.wav");
         #endif
         if (!bomba) {
             bomba = glmReadOBJ("models/bombi/bombi.obj");
@@ -243,10 +243,11 @@ public:
     void rotar(){
         dibujar();
     }
-    void cortar(Objeto * & a , Objeto * & b){
+    void cortar(){
         #ifndef __APPLE__
         musica2->reproduce();
         #endif
+        musica2->para();
     }
 };
 
@@ -394,8 +395,8 @@ public:
         #ifndef __APPLE__
         musica->reproduce();
         #endif
-        a->set(centro->x, centro->y, centro->z, tam/2, ang+150, 10, this->R, this->G, this->B, indice, 0);
-        b->set(centro->x, centro->y, centro->z, tam/2, ang-150, 10, this->R, this->G, this->B, indice, 1);
+        a->set(centro->x, centro->y, centro->z, tam/2, -PI/6, this->vel/4, this->R, this->G, this->B, indice, 0);
+        b->set(centro->x, centro->y, centro->z, tam/2, PI/6, this->vel/4, this->R, this->G, this->B, indice, 1);
         #ifndef __APPLE__
         musica->para();
         #endif

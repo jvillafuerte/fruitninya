@@ -24,13 +24,14 @@ public:
     //Recorrer el vector de puntos y dibujar lineas entre cada dos puntos del vector
     //El grosor de la linea va aumentada segun la posicion del indice del vector
     void dibujar(){
+        glDisable(GL_LIGHTING);
         if(drawer)
         {
             for (int i = 1; i < puntos.size(); i++)
             {
                 glLineWidth(i % 100);
                 glBegin(GL_LINES);
-                glColor3f(0.7f, 0.0f, 0.0f);
+                glColor3f(0.1f, 0.3f, 0.7f);
                 glVertex2f(puntos[i-1]->x, puntos[i-1]->y);
                 glVertex2f(puntos[i]->x, puntos[i]->y);
                 glEnd();
@@ -48,6 +49,7 @@ public:
         }
         if(drawer)
             timer--;
+        glEnable(GL_LIGHTING);
     }
 
     ~MouseHandler(){}

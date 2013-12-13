@@ -100,7 +100,9 @@ int nivel, frutas;
                     tex->estado = true;
                     estado = true;
                     tex->tiempo_terminado = true;
+                    objectslauncher->bombas[j]->cortar();
                 }
+
             }
         }
     }
