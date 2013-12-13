@@ -11,7 +11,7 @@ GameHandler * gm;
 ObjectsLauncher * launcher;
 Texto * tex;
 
-int ANGULO = 10;
+GLuint textures;
 GLuint LoadGLTexture(char* filename, int width , int height)
 {
        GLuint texture;
@@ -28,12 +28,12 @@ GLuint LoadGLTexture(char* filename, int width , int height)
       glGenTextures(1, &texture); // allocate a texture name
       glBindTexture(GL_TEXTURE_2D, texture); // select our current texture
       glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);  
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_DECAL);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_DECAL);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);  // when texture area is small, bilinear filter the closest mipmap
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // when texture area is large, bilinear filter the first mipmap
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // texture should tile
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_DECAL);
+      // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_DECAL);
+      // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);  // when texture area is small, bilinear filter the closest mipmap
+      // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // when texture area is large, bilinear filter the first mipmap
+      // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // texture should tile
+      // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
       gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data); // build our texture mipmaps
       free(data);  
    
@@ -51,21 +51,13 @@ void displayFn(){
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
     //lLightfv(GL_LIGHT1, GL_POSITION, light_pos_top);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
-    //textu->run();
     //glLightfv(GL_LIGHT1, GL_AMBIENT, color2);
 
     mh->dibujar();
     gm->run();
-    GLuint textures = LoadGLTexture("madera2.bmp", 480, 480);
-    glEnable(GL_TEXTURE_2D);
-      glBindTexture( GL_TEXTURE_2D, textures);   
-      glBegin(GL_QUADS);                
-              glTexCoord2f(0.0f, 0.0f);  glVertex3f(0,0,-30);
-              glTexCoord2f(1.0f, 0.0f);  glVertex3f(WIN_ANCHO,0,-30);
-              glTexCoord2f(1.0f, 1.0f);  glVertex3f(WIN_ANCHO,WIN_ALTO,-30);
-              glTexCoord2f(0.0f, 1.0f);  glVertex3f(0,WIN_ALTO,-30);
-      glEnd();
-    glDisable(GL_TEXTURE_2D); 
+
+    
+    
     
     glutSwapBuffers();
 }
@@ -135,6 +127,17 @@ int main(int argc, char *argv[]){
    mh = new MouseHandler();
    gm = new GameHandler(); gm->set(mh, launcher, tex);
    //textu = new texture("madera2.bmp", 480, 480);
+
+   textures = LoadGLTexture("madera2.bmp", 480, 480);
+   glEnable(GL_TEXTURE_2D);
+   glBindTexture( GL_TEXTURE_2D, textures);   
+   glBegin(GL_QUADS);                
+              glTexCoord2f(0.0f, 0.0f);  glVertex3f(0,0,-30);
+              glTexCoord2f(1.0f, 0.0f);  glVertex3f(WIN_ANCHO,0,-30);
+              glTexCoord2f(1.0f, 1.0f);  glVertex3f(WIN_ANCHO,WIN_ALTO,-30);
+              glTexCoord2f(0.0f, 1.0f);  glVertex3f(0,WIN_ALTO,-30);
+      glEnd();
+  glDisable(GL_TEXTURE_2D); 
 
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
