@@ -150,7 +150,7 @@ public:
 
     virtual void mover(){
         rot += 0.1 * sentido;
-        tiempo+=0.01;
+        tiempo+=0.05;
         centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
         centro->x = x0  + vel_x * tiempo;
     }
