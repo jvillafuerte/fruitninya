@@ -22,7 +22,7 @@ int nivel, frutas;
         mousehandler = mh;
         objectslauncher = ol;
         tex = t;
-        objectslauncher->set_max(rand() % MAX_OBJETOS_INICIAL, 1);
+        objectslauncher->set_max(1 + rand() % MAX_OBJETOS_INICIAL - 2, 1);
         objectslauncher->create_objects();
         nivel = 1;
         frutas = 0;
@@ -33,7 +33,7 @@ int nivel, frutas;
             objectslauncher->run();
             if(objectslauncher->get_status()){
                 objectslauncher->destroy();
-                int obj = (rand() % MAX_OBJETOS);
+                int obj = (6 + rand() % MAX_OBJETOS);
                 int fru = obj - nivel / 2;
                 int bom = 1 + nivel / 2;
                 objectslauncher->set_max(fru, bom);

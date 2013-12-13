@@ -56,22 +56,22 @@ public:
     }
 
     bool get_status(){
-        empty = true;        //Si es que recorrio y todos salieron entonces el vector de objetos estara vacio.
+        bool emptyy = true;        //Si es que recorrio y todos salieron entonces el vector de objetos estara vacio.
 
         for (int i=0 ; i < max_frutas; i++)                //Crea un numero max de frutas en el vector de objetos 
         {
             if(frutas[i]->centro->y > -ORIGEN_Y){      //verifica si el objeto esta fuera de la pantalla
-                empty = false;                          
-                return false;
+                emptyy = false;
             }
         }
         for (int i=0; i < max_bombas; i++)  //Crea un numero maximo de bombas en el vector de objetos
         {
-            if(frutas[i]->centro->y > -ORIGEN_Y){      //verifica si el objeto esta fuera de la pantalla
-                empty = false;                          
-                return false;
+            if(bombas[i]->centro->y > -ORIGEN_Y){      //verifica si el objeto esta fuera de la pantalla
+                emptyy = false;                          
             }
         }
+        if(emptyy) empty = true;
+        else empty = false;
 
         return empty;
     }

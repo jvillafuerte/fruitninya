@@ -247,7 +247,6 @@ public:
         #ifndef __APPLE__
         musica2->reproduce();
         #endif
-        musica2->para();
     }
 };
 
@@ -268,6 +267,7 @@ public:
         indice=ind;
         cual_mitad=cm;
         indice_real = indice*2 + cual_mitad;
+        cout<<indice_real<<endl;
         if (!modelos_mitades[indice_real]) {
             modelos_mitades[indice_real] = glmReadOBJ(rutas_mitades[indice_real]);
             if (!modelos_mitades[indice_real]) exit(0);
@@ -324,6 +324,7 @@ public:
         indice=ind;
         cual_mitad=cm;
         indice_real = indice*2 + cual_mitad;
+        cout<<indice_real<<endl;
         if (!modelos_mitades[indice_real]) {
             modelos_mitades[indice_real] = glmReadOBJ(rutas_mitades[indice_real]);
             if (!modelos_mitades[indice_real]) exit(0);

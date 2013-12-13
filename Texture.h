@@ -40,18 +40,18 @@ class texture
 	    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data); // build our texture mipmaps
 	    free(data);  
 	 
-	    return texture;
-	}
+        return texture;
+    }
 
-	void run (){
+    void run (){
 		GLuint textures = LoadGLTexture();
 	    glEnable(GL_TEXTURE_2D);
 	    glBindTexture( GL_TEXTURE_2D, textures);   
 	    glBegin(GL_QUADS);                
-	            glTexCoord2f(0.0f, 0.0f);  glVertex3f(0,0,-30);
-	            glTexCoord2f(1.0f, 0.0f);  glVertex3f(WIN_ANCHO,0,-30);
-	            glTexCoord2f(1.0f, 1.0f);  glVertex3f(WIN_ANCHO,WIN_ALTO,-30);
-	            glTexCoord2f(0.0f, 1.0f);  glVertex3f(0,WIN_ALTO,-30);
+	            glTexCoord2f(0.0f, 0.0f);  glVertex3f(0,0,MIN_Z);
+	            glTexCoord2f(1.0f, 0.0f);  glVertex3f(WIN_ANCHO,0,MIN_Z);
+	            glTexCoord2f(1.0f, 1.0f);  glVertex3f(WIN_ANCHO,WIN_ALTO,MIN_Z);
+	            glTexCoord2f(0.0f, 1.0f);  glVertex3f(0,WIN_ALTO,MIN_Z);
 	    glEnd();
 	    glDisable(GL_TEXTURE_2D); 
 	}
