@@ -72,6 +72,28 @@ public:
     }
 
     void print(){
+
+        GLfloat light_pos_titulo[] = { 350, 580, 0.0, 1.0 };
+        GLfloat light_pos_cortadas[] = { 10, 560, 0.0, 1.0 };
+        GLfloat light_pos_puntaje[] = { 10, 540, 0.0, 1.0 };
+        GLfloat light_pos_nivel[] = { 5, 600, 0.0, 1.0 };
+        GLfloat light_pos_tiempo[] = { 650, 580, 0.0, 1.0 };
+        //GLfloat light_pos_top[] = { WIN_ANCHO/2, WIN_ALTO, 10.0, 1.0 };
+        GLfloat color[] = {1.0f, 1.0f, 1.0f, 0.5f};
+        //GLfloat color2[] = {1.0f, 1.0f, 1.0f, 0.5f};
+
+        glLightfv(GL_LIGHT0, GL_POSITION, light_pos_titulo);
+        glLightfv(GL_LIGHT1, GL_POSITION, light_pos_cortadas);
+        glLightfv(GL_LIGHT2, GL_POSITION, light_pos_puntaje);
+        glLightfv(GL_LIGHT3, GL_POSITION, light_pos_nivel);
+        glLightfv(GL_LIGHT4, GL_POSITION, light_pos_tiempo);
+        //lLightfv(GL_LIGHT1, GL_POSITION, light_pos_top);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, color);
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, color);
+        glLightfv(GL_LIGHT3, GL_DIFFUSE, color);
+        glLightfv(GL_LIGHT4, GL_DIFFUSE, color);
+
         glColor3f(1.0f, 1.0f, 1.0f);
         renderBitmapString(350,580,(void *)font,"Fruit Ninja");
         renderBitmapString(10,560, (void*)font2, "Frutas Cortadas: "); 
@@ -98,7 +120,14 @@ public:
                 glColor3f(1.0f, 0.0f, 0.0f);
                 renderBitmapString(350,350,(void *)font,"Termino!");
             }
-       
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glEnable(GL_LIGHT1);
+        glEnable(GL_LIGHT2);
+        glEnable(GL_LIGHT3);
+        glEnable(GL_LIGHT4);
+
 
     }
 
