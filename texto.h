@@ -78,21 +78,28 @@ public:
         GLfloat light_pos_puntaje[] = { 10, 540, 0.0, 1.0 };
         GLfloat light_pos_nivel[] = { 5, 600, 0.0, 1.0 };
         GLfloat light_pos_tiempo[] = { 650, 580, 0.0, 1.0 };
+        GLfloat light_pos_tiempo_cro[] = { 700, 580, 0.0, 1.0 };
+        GLfloat light_pos_nivel_re[] = { 50, 580, 0.0, 1.0 };
         //GLfloat light_pos_top[] = { WIN_ANCHO/2, WIN_ALTO, 10.0, 1.0 };
-        GLfloat color[] = {1.0f, 1.0f, 1.0f, 0.5f};
+        GLfloat color[] = {1.0f, 1.0f, 1.0f, 5.5f};
         //GLfloat color2[] = {1.0f, 1.0f, 1.0f, 0.5f};
 
-        glLightfv(GL_LIGHT0, GL_POSITION, light_pos_titulo);
-        glLightfv(GL_LIGHT1, GL_POSITION, light_pos_cortadas);
-        glLightfv(GL_LIGHT2, GL_POSITION, light_pos_puntaje);
-        glLightfv(GL_LIGHT3, GL_POSITION, light_pos_nivel);
-        glLightfv(GL_LIGHT4, GL_POSITION, light_pos_tiempo);
+        glLightfv(GL_LIGHT1, GL_POSITION, light_pos_titulo);
+        glLightfv(GL_LIGHT2, GL_POSITION, light_pos_cortadas);
+        glLightfv(GL_LIGHT3, GL_POSITION, light_pos_puntaje);
+        glLightfv(GL_LIGHT4, GL_POSITION, light_pos_nivel);
+        glLightfv(GL_LIGHT5, GL_POSITION, light_pos_tiempo);
+        glLightfv(GL_LIGHT6, GL_POSITION, light_pos_tiempo_cro);
+        glLightfv(GL_LIGHT7, GL_POSITION, light_pos_nivel_re);
+
         //lLightfv(GL_LIGHT1, GL_POSITION, light_pos_top);
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
         glLightfv(GL_LIGHT1, GL_DIFFUSE, color);
         glLightfv(GL_LIGHT2, GL_DIFFUSE, color);
         glLightfv(GL_LIGHT3, GL_DIFFUSE, color);
         glLightfv(GL_LIGHT4, GL_DIFFUSE, color);
+        glLightfv(GL_LIGHT5, GL_DIFFUSE, color);
+        glLightfv(GL_LIGHT6, GL_DIFFUSE, color);
+        glLightfv(GL_LIGHT7, GL_DIFFUSE, color);
 
         glColor3f(1.0f, 1.0f, 1.0f);
         renderBitmapString(350,580,(void *)font,"Fruit Ninja");
@@ -122,11 +129,13 @@ public:
             }
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
         glEnable(GL_LIGHT1);
         glEnable(GL_LIGHT2);
         glEnable(GL_LIGHT3);
         glEnable(GL_LIGHT4);
+        glEnable(GL_LIGHT5);
+        glEnable(GL_LIGHT6);
+        glEnable(GL_LIGHT7);
 
 
     }
