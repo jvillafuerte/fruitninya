@@ -41,14 +41,14 @@ GLMmodel * platano_b;
 
 char * rutas_modelos[4] = {"models/apple/apples.obj",
                         "models/pera/pera.obj",
-                        "models/pinia/pina.obj",
-                        "models/platano/platano_entero.obj"};
+                        "models/melon/melon.obj",
+                        "models/coco/coco.obj"};
 
 char * rutas_mitades[8] = {
     "models/apple/apples_ladoa.obj", "models/apple/apples_ladob.obj",
     "models/pera/pera_ladoa.obj", "models/pera/pera_ladob.obj",
-    "models/pinia/pina_ladoa.obj", "models/pinia/pina_ladob.obj",
-    "models/platano/platano_ladoa.obj", "models/platano/platano_ladob.obj"
+    "models/melon/melonlado_a.obj", "models/melon/melonlado_b.obj",
+    "models/coco/cocolado_a.obj", "models/coco/cocolado_b.obj"
 };
 
 GLMmodel * modelos[4] = {manzana, pera, pinia, platano};
@@ -164,7 +164,7 @@ public:
 
     virtual void mover(){
         rot += 0.1 * sentido;
-        tiempo+=0.05;
+        tiempo+=0.005;
         centro->y= y0 + vel_y*tiempo-GRAVEDAD*tiempo*tiempo/2;
         centro->x = x0  + vel_x * tiempo;
     }
@@ -207,7 +207,7 @@ public:
         musica2 = new c_musica( "Sonidos/Explosion.wav");
         #endif
         if (!bomba) {
-            bomba = glmReadOBJ("models/bomba/bomb.obj");
+            bomba = glmReadOBJ("models/bombi/bombi.obj");
             if (!bomba) exit(0);
         }
 
