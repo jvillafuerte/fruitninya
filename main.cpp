@@ -46,14 +46,15 @@ GLint LoadGLTexture(const char *filename, int width, int height)
 //Manda a dibujar el recorrido del mouse y se ejecuta la funcion principal "GameHandler"
 void displayFn(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    GLfloat light_pos[] = { WIN_ANCHO/2, WIN_ALTO/2, 10.0, 1.0 };
-    GLfloat light_pos_top[] = { WIN_ANCHO/2, WIN_ALTO, 10.0, 1.0 };
+    GLfloat light_pos[] = { WIN_ANCHO/2, WIN_ALTO/2, 0.0, 1.0 };
+    //GLfloat light_pos_top[] = { WIN_ANCHO/2, WIN_ALTO, 10.0, 1.0 };
     GLfloat color[] = {1.0f, 1.0f, 1.0f, 0.5f};
-    GLfloat color2[] = {1.0f, 1.0f, 1.0f, 0.5f};
+    //GLfloat color2[] = {1.0f, 1.0f, 1.0f, 0.5f};
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+    //lLightfv(GL_LIGHT1, GL_POSITION, light_pos_top);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
-    glLightfv(GL_LIGHT1, GL_AMBIENT, color2);
+    //glLightfv(GL_LIGHT1, GL_AMBIENT, color2);
     //glColor3f(0.5,0.5,0.5);
     mh->dibujar();
     gm->run();
