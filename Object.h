@@ -250,12 +250,6 @@ public:
     }
 };
 
-// char * sonidos[4] = {"Sonidos/cortar.wav",
-//                      "Sonidos/cortar2.wav",
-//                      "Sonidos/corta3.wav",
-//                      "Sonidos/corta4.wav"};
-
-
 class Mitad:public Objeto
 {
 public:
@@ -272,15 +266,6 @@ public:
             modelos_mitades[indice_real] = glmReadOBJ(rutas_mitades[indice_real]);
             if (!modelos_mitades[indice_real]) exit(0);
         }
-        // if(cm==0){
-        //     glPushMatrix(); 
-        //     glTranslatef(centro->x,30+centro->y, centro->z); 
-        //     glRotatef(30,0.0,0.0,1.0); 
-        //     // glRotatef(rot,0.0,1.0,0.0); 
-        //     // glTranslatef( -centro->x, -centro->y, -centro->z);
-        //     // glLoadIdentity(); 
-        //     // glPopMatrix();
-        // }
     }
 
     ~Mitad(){}

@@ -7,5 +7,7 @@ g++ main.cpp glm.c -lGL -lGLU -lglut -lSDL_mixer -std=c++11 -lSDL -lm -o app
 MAC------------
 g++ -framework OpenGL -framework GLUT -framework IOKit -lobjc -I /opt/local/include/SOIL/ main.cpp -o app
 
+g++ -o app -framework OpenGL -framework GLUT -framework IOKit -framework Cocoa -lobjc  main.cpp glm.c
+
 EJECUTAR-------
 ./app
